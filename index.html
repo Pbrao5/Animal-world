@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🦁 Animal Kingdom</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito',sans-serif;background:#f5f0e8;min-height:100vh;overflow-x:hidden}
+
+/* INTRO */
+#s-intro{
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:linear-gradient(160deg,#1a2e1a 0%,#2d4a1e 40%,#3b3018 100%);
+  text-align:center;padding:2rem;position:relative;overflow:hidden
+}
+.intro-particles{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.particle{position:absolute;font-size:1.8rem;opacity:.12;animation:particleDrift linear infinite}
+@keyframes particleDrift{0%{transform:translateY(110vh) rotate(0deg)}100%{transform:translateY(-10vh) rotate(360deg)}}
+.intro-logo{font-size:clamp(5rem,16vw,8rem);animation:logoBounce 3s ease infinite;filter:drop-shadow(0 0 30px rgba(251,191,36,.3));display:block;margin-bottom:.5rem}
+@keyframes logoBounce{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-15px) rotate(3deg)}}
+.intro-title{font-family:'Fredoka One',cursive;font-size:clamp(2rem,7vw,4.2rem);color:#f5f0e8;text-shadow:0 2px 12px rgba(0,0,0,.3);line-height:1.1}
+.intro-title span{background:linear-gradient(135deg,#d4a84b,#8bc34a,#d4a84b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.intro-sub{font-size:clamp(.9rem,2.5vw,1.15rem);color:rgba(245,240,232,.75);font-weight:700;max-width:480px;margin:.8rem auto}
+.intro-stats{display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;margin:1.5rem 0}
+.istat{background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.22);border-radius:50px;padding:.45rem 1.1rem;color:rgba(245,240,232,.9);font-weight:800;font-size:.82rem;box-shadow:0 2px 8px rgba(0,0,0,.15);cursor:pointer;transition:transform .18s,box-shadow .18s,background .18s;user-select:none}
+.istat:hover{transform:translateY(-3px) scale(1.07);box-shadow:0 6px 18px rgba(0,0,0,.25);background:rgba(255,255,255,.22);border-color:rgba(212,168,75,.7)}
+.istat:active{transform:scale(.95)}
+.intro-btn{font-family:'Fredoka One',cursive;font-size:clamp(1.1rem,3vw,1.5rem);background:linear-gradient(135deg,#d4a84b,#8bc34a);color:#1a2e1a;border:none;border-radius:50px;padding:.9rem 3rem;cursor:pointer;box-shadow:0 8px 28px rgba(139,195,74,.35);transition:transform .2s,box-shadow .2s;margin-top:.5rem}
+.intro-btn:hover{transform:translateY(-4px) scale(1.04);box-shadow:0 14px 38px rgba(139,195,74,.5)}
+
+/* TICKER */
+.ticker-wrap{width:100%;overflow:hidden;margin-top:1.8rem;position:relative}
+.ticker-wrap::before,.ticker-wrap::after{content:'';position:absolute;top:0;bottom:0;width:60px;z-index:2;pointer-events:none}
+.ticker-wrap::before{left:0;background:linear-gradient(90deg,#1a2e1a,transparent)}
+.ticker-wrap::after{right:0;background:linear-gradient(270deg,#1a2e1a,transparent)}
+.ticker-track{display:flex;gap:.8rem;animation:ticker 24s linear infinite;width:max-content}
+.ticker-item{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.18);border-radius:50px;padding:.4rem 1rem;color:rgba(245,240,232,.85);font-weight:800;font-size:.8rem;white-space:nowrap}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* HUB */
+#s-hub{display:none;min-height:100vh;flex-direction:column;align-items:center;padding:1.5rem 1rem 4rem;background:linear-gradient(180deg,#f5f0e8 0%,#e8dfc8 100%)}
+#s-hub.active{display:flex}
+.hub-top{width:100%;max-width:1000px;display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap}
+.hub-back{font-family:'Fredoka One',cursive;font-size:.9rem;background:none;border:2px solid #a08060;color:#5a3e28;border-radius:50px;padding:.4rem 1.1rem;cursor:pointer;transition:all .2s;white-space:nowrap}
+.hub-back:hover{background:#e8d8b8;transform:scale(1.04)}
+.hub-title{font-family:'Fredoka One',cursive;font-size:clamp(1.6rem,5vw,2.6rem);color:#3b2a14;flex:1}
+.hub-search{border:2px solid #e2e8f0;border-radius:50px;padding:.5rem 1.1rem;font-family:'Nunito',sans-serif;font-weight:700;font-size:.9rem;outline:none;transition:border-color .2s;min-width:160px;flex:1;max-width:260px}
+.hub-search:focus{border-color:#8bc34a}
+.cats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1.2rem;max-width:1000px;width:100%;margin-bottom:2rem}
+.cat-card{border:none;border-radius:24px;padding:1.8rem 1rem 1.2rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:.4rem;transition:transform .25s,box-shadow .25s;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent}
+/* shine sweep on hover */
+.cat-card::before{content:'';position:absolute;top:0;left:-75%;width:50%;height:100%;background:linear-gradient(to right,rgba(255,255,255,0),rgba(255,255,255,.22),rgba(255,255,255,0));transform:skewX(-20deg);transition:left .55s ease;pointer-events:none}
+.cat-card:hover::before{left:130%}
+/* tap hint arrow */
+.cat-arrow{font-size:.85rem;color:rgba(255,255,255,.6);margin-top:.2rem;transition:transform .2s}
+.cat-card:hover .cat-arrow{transform:translateX(4px)}
+/* click label */
+.cat-tap{font-size:.7rem;font-weight:900;color:rgba(255,255,255,.5);letter-spacing:.5px;text-transform:uppercase;margin-top:.1rem}
+.cat-card:hover{transform:translateY(-8px) scale(1.05)}
+.cat-card:active{transform:scale(.95)}
+.cat-icon{font-size:3.5rem;display:block;animation:wob 3s ease infinite}
+.cat-card:nth-child(2) .cat-icon{animation-delay:.35s}
+.cat-card:nth-child(3) .cat-icon{animation-delay:.7s}
+.cat-card:nth-child(4) .cat-icon{animation-delay:1.05s}
+.cat-card:nth-child(5) .cat-icon{animation-delay:1.4s}
+.cat-card:nth-child(6) .cat-icon{animation-delay:1.75s}
+.cat-card:nth-child(7) .cat-icon{animation-delay:2.1s}
+.cat-card:nth-child(8) .cat-icon{animation-delay:2.45s}
+.cat-name{font-family:'Fredoka One',cursive;font-size:1.05rem;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.3)}
+.cat-count{font-size:.78rem;color:rgba(255,255,255,.75);font-weight:700}
+.cc1{background:linear-gradient(135deg,#8B4513,#6B3410);box-shadow:0 8px 24px rgba(107,52,16,.35)}.cc1:hover{box-shadow:0 14px 36px rgba(107,52,16,.55)}
+.cc2{background:linear-gradient(135deg,#4a7c59,#2d5a3d);box-shadow:0 8px 24px rgba(45,90,61,.35)}.cc2:hover{box-shadow:0 14px 36px rgba(45,90,61,.55)}
+.cc3{background:linear-gradient(135deg,#2a6496,#1a4a73);box-shadow:0 8px 24px rgba(26,74,115,.35)}.cc3:hover{box-shadow:0 14px 36px rgba(26,74,115,.55)}
+.cc4{background:linear-gradient(135deg,#5a8a3c,#3d6b28);box-shadow:0 8px 24px rgba(61,107,40,.35)}.cc4:hover{box-shadow:0 14px 36px rgba(61,107,40,.55)}
+.cc5{background:linear-gradient(135deg,#b5860d,#8a6200);box-shadow:0 8px 24px rgba(138,98,0,.35)}.cc5:hover{box-shadow:0 14px 36px rgba(138,98,0,.55)}
+.cc6{background:linear-gradient(135deg,#7a5c3a,#5c4020);box-shadow:0 8px 24px rgba(92,64,32,.35)}.cc6:hover{box-shadow:0 14px 36px rgba(92,64,32,.55)}
+.cc7{background:linear-gradient(135deg,#6b8e23,#4a6b12);box-shadow:0 8px 24px rgba(74,107,18,.35)}.cc7:hover{box-shadow:0 14px 36px rgba(74,107,18,.55)}
+.cc8{background:linear-gradient(135deg,#6b5a3a,#4a3e28);box-shadow:0 8px 24px rgba(74,62,40,.35)}.cc8:hover{box-shadow:0 14px 36px rgba(74,62,40,.55)}
+
+/* ANIMAL GRID PAGE */
+#s-animals{display:none;min-height:100vh;flex-direction:column;align-items:center;padding:1.5rem 1rem 4rem;background:linear-gradient(180deg,#f5f0e8 0%,#e8dfc8 100%)}
+#s-animals.active{display:flex}
+.animals-top{width:100%;max-width:1000px;display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap}
+.anim-back{font-family:'Fredoka One',cursive;font-size:.9rem;border:none;border-radius:50px;padding:.45rem 1.2rem;cursor:pointer;color:white;transition:transform .2s;white-space:nowrap}
+.anim-back:hover{transform:scale(1.06)}
+.anim-page-title{font-family:'Fredoka One',cursive;font-size:clamp(1.5rem,5vw,2.4rem);flex:1}
+.animals-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:1.1rem;max-width:1000px;width:100%}
+.animal-card{background:#fffdf8;border-radius:20px;overflow:hidden;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.1);border:2px solid #e8dcc8;transition:transform .22s,box-shadow .22s,border-color .22s;animation:cardIn .4s cubic-bezier(.23,1,.32,1) both}
+@keyframes cardIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.animal-card:hover{transform:translateY(-6px);box-shadow:0 14px 32px rgba(0,0,0,.14);border-color:var(--cat-color)}
+.ac-img-wrap{width:100%;height:130px;overflow:hidden;position:relative;background:#f1f5f9}
+.ac-img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.animal-card:hover .ac-img{transform:scale(1.08)}
+.ac-img-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:4rem;background:linear-gradient(135deg,#f8fafc,#f1f5f9)}
+.ac-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#f1f5f9;font-size:1.5rem;animation:pulse 1.2s ease infinite}
+.ac-body{padding:.85rem .8rem;background:#fffdf8}
+.ac-name{font-family:'Fredoka One',cursive;font-size:1.05rem;color:#2d1a0a}
+.ac-sciname{font-size:.72rem;color:#8a6a50;font-weight:700;font-style:italic;margin-top:.1rem}
+.ac-tags{display:flex;gap:.3rem;flex-wrap:wrap;margin-top:.5rem}
+.ac-tag{font-size:.68rem;font-weight:800;border-radius:50px;padding:.18rem .55rem}
+
+
+
+/* MODAL */
+.modal-bg{position:fixed;inset:0;background:rgba(10,15,30,.75);backdrop-filter:blur(12px);display:none;align-items:center;justify-content:center;z-index:500;padding:1rem;overflow-y:auto}
+.modal-bg.on{display:flex}
+.modal{background:#fdf8f0;border-radius:28px;max-width:520px;width:100%;overflow:hidden;animation:mIn .45s cubic-bezier(.175,.885,.32,1.5);box-shadow:0 30px 80px rgba(0,0,0,.3);max-height:92vh;overflow-y:auto}
+@keyframes mIn{from{transform:scale(.6) translateY(30px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+.m-hero{position:relative;height:220px;overflow:hidden}
+.m-hero-img{width:100%;height:100%;object-fit:cover}
+.m-hero-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:7rem}
+.m-hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.75) 0%,transparent 60%)}
+.m-hero-title{position:absolute;bottom:1rem;left:1.2rem;right:1.2rem}
+.m-flag{font-size:3.5rem;display:block;line-height:1}
+.m-name{font-family:'Fredoka One',cursive;font-size:1.8rem;color:white;text-shadow:0 2px 10px rgba(0,0,0,.4);line-height:1.1}
+.m-sciname{color:rgba(255,255,255,.7);font-style:italic;font-size:.85rem;font-weight:700}
+
+
+.m-body{padding:1.2rem 1.4rem 0}
+.m-tags{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem}
+.m-tag{font-size:.75rem;font-weight:800;border-radius:50px;padding:.25rem .75rem}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-bottom:.9rem}
+.info-box{background:#f0ebe0;border-radius:14px;padding:.8rem .9rem}
+.info-box.full{grid-column:1/-1}
+.ib-label{font-size:.68rem;font-weight:900;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.25rem}
+.ib-val{font-size:.92rem;font-weight:700;color:#2d1a0a;line-height:1.45}
+.ib-icon{font-size:1.3rem;margin-bottom:.2rem;display:block}
+.fun-facts{background:linear-gradient(135deg,#e8d5a0,#d4b860);border-radius:16px;padding:1rem 1.1rem;margin-bottom:1rem}
+.ff-title{font-family:'Fredoka One',cursive;font-size:1rem;color:#5a3a00;margin-bottom:.5rem}
+.ff-list{list-style:none;display:flex;flex-direction:column;gap:.35rem}
+.ff-list li{font-size:.88rem;font-weight:700;color:#4a2800;display:flex;gap:.4rem;align-items:flex-start}
+.ff-list li::before{content:'⭐';flex-shrink:0}
+.conserv{display:flex;align-items:center;gap:.6rem;border-radius:14px;padding:.7rem 1rem;margin-bottom:.9rem}
+.conserv-badge{font-family:'Fredoka One',cursive;font-size:.85rem;padding:.3rem .8rem;border-radius:50px;color:white;white-space:nowrap}
+.conserv-text{font-size:.82rem;font-weight:700;color:#374151}
+.m-close{width:100%;font-family:'Fredoka One',cursive;font-size:1.05rem;border:none;padding:1rem;cursor:pointer;color:white;transition:opacity .2s;position:sticky;bottom:0}
+.m-close:hover{opacity:.85}
+
+/* SEARCH RESULTS */
+#s-search{display:none;min-height:100vh;flex-direction:column;align-items:center;padding:1.5rem 1rem 4rem;background:linear-gradient(180deg,#f5f0e8 0%,#e8dfc8 100%)}
+#s-search.active{display:flex}
+
+/* CONSERVATION COLORS */
+.lc{background:#5a8a3c;color:#fff}.nt{background:#8a7a30;color:#fff}.vu{background:#b5860d;color:#fff}.en{background:#8B4513;color:#fff}.cr{background:#7a2020;color:#fff}.ew{background:#4a3a2a;color:#fff}.ex{background:#2a2a2a;color:#fff}
+
+@keyframes wob{0%,100%{transform:rotate(0)}30%{transform:rotate(-7deg)}70%{transform:rotate(7deg)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.fin{animation:scIn .45s cubic-bezier(.23,1,.32,1) both}
+@keyframes scIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+
+/* ── QUIZ ── */
+#s-quiz{display:none;min-height:100vh;flex-direction:column;align-items:center;padding:1.5rem 1rem 4rem;background:linear-gradient(160deg,#f5f0e8,#e8dfc8,#ddd0b8)}
+#s-quiz.active{display:flex}
+.quiz-wrap{max-width:560px;width:100%}
+.quiz-header{display:flex;align-items:center;gap:.8rem;margin-bottom:1.2rem;flex-wrap:wrap}
+.quiz-back{font-family:'Fredoka One',cursive;font-size:.9rem;background:none;border:2px solid #d4c9b8;color:#6b5e4e;border-radius:50px;padding:.4rem 1.1rem;cursor:pointer;transition:all .2s}
+.quiz-back:hover{background:#f0ebe2;transform:scale(1.04)}
+.quiz-cat-sel{display:none}
+.qcat-btn{font-family:'Fredoka One',cursive;font-size:.78rem;border:2px solid #e2e8f0;background:white;border-radius:50px;padding:.32rem .9rem;cursor:pointer;color:#374151;transition:all .15s}
+.qcat-btn:hover{border-color:#8B4513;background:#f5ede0}
+.qcat-btn.on{background:linear-gradient(135deg,#8B4513,#6B3410);border-color:#8B4513;color:white}
+.quiz-prog-bar{background:#e2e8f0;border-radius:50px;height:10px;overflow:hidden;margin-bottom:.6rem}
+.quiz-prog-fill{height:100%;border-radius:50px;background:linear-gradient(90deg,#8B4513,#6b8e23);transition:width .4s}
+.quiz-meta{font-size:.8rem;color:#7a5c3a;font-weight:800;margin-bottom:1rem}
+.quiz-q-icon{font-size:3.5rem;display:block;text-align:center;animation:wob 2.5s ease infinite;margin-bottom:.5rem}
+.quiz-q{font-family:'Fredoka One',cursive;font-size:clamp(1.15rem,4.5vw,1.7rem);color:#2d1a0a;text-align:center;min-height:3.5rem;margin-bottom:1.2rem;line-height:1.35}
+.quiz-opts{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.8rem}@media(max-width:360px){.quiz-opts{grid-template-columns:1fr}}
+.quiz-opt{font-family:'Fredoka One',cursive;font-size:.95rem;border:3px solid #c8b89a;background:#fffdf8;border-radius:16px;padding:.9rem .7rem;cursor:pointer;color:#1e293b;transition:all .2s;text-align:center;line-height:1.3}
+.quiz-opt:hover:not(:disabled){border-color:#8B4513;background:#f5ede0;transform:scale(1.03)}
+.quiz-opt.correct{background:#dcfce7;border-color:#4ade80;color:#166534;animation:popIn .35s ease}
+.quiz-opt.wrong{background:#fee2e2;border-color:#fca5a5;color:#991b1b}
+@keyframes popIn{0%{transform:scale(1)}50%{transform:scale(1.07)}100%{transform:scale(1)}}
+.quiz-fb{font-family:'Fredoka One',cursive;font-size:1.05rem;text-align:center;min-height:1.8rem;margin:.3rem 0}
+.quiz-fact{font-size:.82rem;color:#4a3000;font-weight:700;text-align:center;background:#f0e8c0;border-radius:12px;padding:.6rem .9rem;margin:.3rem 0;display:none}
+.quiz-next{font-family:'Fredoka One',cursive;font-size:1rem;background:linear-gradient(135deg,#8B4513,#5a8a3c);color:white;border:none;border-radius:50px;padding:.7rem 2.2rem;cursor:pointer;display:none;margin:.5rem auto;transition:transform .2s;display:none}
+.quiz-next:hover{transform:scale(1.05)}
+.quiz-result{text-align:center;padding:2rem 1rem}
+.qr-emoji{font-size:5rem;display:block;animation:wob 2s ease infinite}
+.qr-title{font-family:'Fredoka One',cursive;font-size:2.2rem;color:#1e293b;margin-top:.4rem}
+.qr-score{font-family:'Fredoka One',cursive;font-size:4rem;background:linear-gradient(135deg,#8B4513,#6b8e23);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.qr-sub{font-size:.95rem;color:#4a3000;font-weight:700;margin:.3rem 0}
+.qr-btns{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;margin-top:1.2rem}
+.qr-btn{font-family:'Fredoka One',cursive;font-size:.95rem;border:none;border-radius:50px;padding:.65rem 1.8rem;cursor:pointer;color:white;transition:transform .2s}
+.qr-btn:hover{transform:scale(1.06)}
+</style>
+</head>
+<body>
+
+<!-- INTRO -->
+<div id="s-intro">
+  <div class="intro-particles" id="particles"></div>
+  <span class="intro-logo">🦁</span>
+  <h1 class="intro-title"><span>Animal Kingdom</span></h1>
+  <p class="intro-sub">Discover amazing creatures from every corner of the Earth — their sounds, homes, food and secrets! 🌍</p>
+  <div class="intro-stats">
+    <div class="istat" onclick="openCat('wild');sndPop()">🦁 Wild Animals</div>
+    <div class="istat" onclick="openCat('birds');sndPop()">🐦 Birds</div>
+    <div class="istat" onclick="openCat('marine');sndPop()">🐠 Marine Life</div>
+    <div class="istat" onclick="openCat('amphibians');sndPop()">🐸 Amphibians</div>
+    <div class="istat" onclick="openCat('reptiles');sndPop()">🦎 Reptiles</div>
+    <div class="istat" onclick="openCat('domestic');sndPop()">🐕 Domestic</div>
+    <div class="istat" onclick="openCat('insects');sndPop()">🦋 Insects</div>
+    <div class="istat" onclick="openCat('prehistoric');sndPop()">🦕 Prehistoric</div>
+  </div>
+  <button class="intro-btn" onclick="goHub()">🚀 Enter the Kingdom!</button>
+  <div style="margin-top:1.2rem;opacity:.7">
+    <a href="https://www.hitwebcounter.com/" target="_blank" style="text-decoration:none">
+      <img src="https://hitwebcounter.com/counter/counter.php?page=21481204&style=0006&nbdigits=5&type=page&initCount=0" title="Visitor Count" alt="Visitor Count" border="0" style="border-radius:6px;height:24px"/>
+    </a>
+  </div>
+
+  <div class="ticker-wrap">
+    <div class="ticker-track">
+      <span class="ticker-item">🦁 Lion</span><span class="ticker-item">🐘 Elephant</span><span class="ticker-item">🐋 Blue Whale</span><span class="ticker-item">🦅 Bald Eagle</span><span class="ticker-item">🐊 Crocodile</span><span class="ticker-item">🐸 Tree Frog</span><span class="ticker-item">🦋 Monarch Butterfly</span><span class="ticker-item">🦕 T-Rex</span><span class="ticker-item">🐬 Dolphin</span><span class="ticker-item">🐯 Tiger</span><span class="ticker-item">🦒 Giraffe</span><span class="ticker-item">🦈 Great White Shark</span><span class="ticker-item">🐧 Penguin</span><span class="ticker-item">🐍 King Cobra</span><span class="ticker-item">🐝 Honeybee</span><span class="ticker-item">🦙 Llama</span>
+      <span class="ticker-item">🦁 Lion</span><span class="ticker-item">🐘 Elephant</span><span class="ticker-item">🐋 Blue Whale</span><span class="ticker-item">🦅 Bald Eagle</span><span class="ticker-item">🐊 Crocodile</span><span class="ticker-item">🐸 Tree Frog</span><span class="ticker-item">🦋 Monarch Butterfly</span><span class="ticker-item">🦕 T-Rex</span><span class="ticker-item">🐬 Dolphin</span><span class="ticker-item">🐯 Tiger</span><span class="ticker-item">🦒 Giraffe</span><span class="ticker-item">🦈 Great White Shark</span><span class="ticker-item">🐧 Penguin</span><span class="ticker-item">🐍 King Cobra</span><span class="ticker-item">🐝 Honeybee</span><span class="ticker-item">🦙 Llama</span>
+    </div>
+  </div>
+</div>
+
+<!-- HUB -->
+<div id="s-hub">
+  <div class="hub-top">
+    <button class="hub-back" onclick="goIntro()">← Home</button>
+    <h1 class="hub-title">🌍 Choose a Category!</h1>
+    <input class="hub-search" id="hub-search" placeholder="🔍 Search any animal..." oninput="doSearch(this.value)" autocomplete="off">
+  </div>
+  <div style="width:100%;max-width:1000px;margin-bottom:1.2rem;display:flex;justify-content:flex-end">
+    <button style="font-family:'Fredoka One',cursive;font-size:1rem;background:linear-gradient(135deg,#d4a84b,#8B4513);color:#fff;border:none;border-radius:50px;padding:.6rem 1.8rem;cursor:pointer;box-shadow:0 4px 16px rgba(139,69,19,.3);transition:transform .2s" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" onclick="startQuiz()">🧠 Animal Quiz!</button>
+  </div>
+  <div class="cats-grid">
+    <button class="cat-card cc1" onclick="openCat('wild')"><span class="cat-icon">🦁</span><span class="cat-name">Wild Animals</span><span class="cat-count">24 animals</span><span class="cat-tap">Tap to explore</span><span class="cat-arrow">→</span></button>
+    <button class="cat-card cc2" onclick="openCat('birds')"><span class="cat-icon">🐦</span><span class="cat-name">Birds</span><span class="cat-count">20 animals</span><span class="cat-tap">Tap to explore</span><span class="cat-arrow">→</span></button>
+    <button class="cat-card cc3" onclick="openCat('marine')"><span class="cat-icon">🐠</span><span class="cat-name">Marine Life</span><span class="cat-count">18 animals</span><span class="cat-tap">Tap to explore</span><span class="cat-arrow">→</span></button>
+    <button class="cat-card cc4" onclick="openCat('amphibians')"><span class="cat-icon">🐸</span><span class="cat-name">Amphibians</span><span class="cat-count">10 animals</span><span class="cat-tap">Tap to explore</span><span class="cat-arrow">→</span></button>
+    <button class="cat-card cc5" onclick="openCat('reptiles')"><span class="cat-icon">🦎</span><span class="cat-name">Reptiles</span><span class="cat-count">15 animals</span><span class="cat-tap">Tap to explore</span><span class="cat-arrow">→</span></button>
+    <button class="cat-card cc6" onclick="openCat('domestic')"><span class="cat-icon">🐕</span><span class="cat-name">Domestic Animals</span><span class="cat-count">14 animals</span><span class="cat-tap">Tap to explore</span><span class="cat-arrow">→</span></button>
+    <button class="cat-card cc7" onclick="openCat('insects')"><span class="cat-icon">🦋</span><span class="cat-name">Insects & Bugs</span><span class="cat-count">12 animals</span><span class="cat-tap">Tap to explore</span><span class="cat-arrow">→</span></button>
+    <button class="cat-card cc8" onclick="openCat('prehistoric')"><span class="cat-icon">🦕</span><span class="cat-name">Prehistoric</span><span class="cat-count">10 animals</span><span class="cat-tap">Tap to explore</span><span class="cat-arrow">→</span></button>
+  </div>
+</div>
+
+<!-- ANIMAL GRID -->
+<div id="s-animals">
+  <div class="animals-top">
+    <button class="anim-back" id="anim-back-btn" onclick="goHub()">← Categories</button>
+    <h2 class="anim-page-title" id="anim-title">Animals</h2>
+  </div>
+  <div class="animals-grid" id="animals-grid"></div>
+</div>
+
+<!-- SEARCH RESULTS -->
+<div id="s-search">
+  <div class="animals-top">
+    <button class="anim-back" style="background:linear-gradient(135deg,#d1d5db,#9ca3af)" onclick="goHub()">← Back</button>
+    <h2 class="anim-page-title" id="search-title">Search Results</h2>
+  </div>
+  <div class="animals-grid" id="search-grid"></div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-bg" id="mbg" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="m-hero" id="m-hero">
+      <div class="m-hero-placeholder" id="m-hero-ph"></div>
+      <img id="m-hero-img" class="m-hero-img" style="display:none" alt="">
+      <div class="m-hero-overlay"></div>
+      <div class="m-hero-title">
+        <span class="m-flag" id="m-emoji"></span>
+        <div class="m-name" id="m-name"></div>
+        <div class="m-sciname" id="m-sciname"></div>
+      </div>
+    </div>
+    <div class="m-body">
+      <div class="m-tags" id="m-tags"></div>
+      <div class="info-grid">
+        <div class="info-box"><span class="ib-icon">🍽️</span><div class="ib-label">Diet</div><div class="ib-val" id="m-diet"></div></div>
+        <div class="info-box"><span class="ib-icon">📍</span><div class="ib-label">Habitat</div><div class="ib-val" id="m-habitat"></div></div>
+        <div class="info-box"><span class="ib-icon">📏</span><div class="ib-label">Size</div><div class="ib-val" id="m-size"></div></div>
+        <div class="info-box"><span class="ib-icon">⚖️</span><div class="ib-label">Weight</div><div class="ib-val" id="m-weight"></div></div>
+        <div class="info-box"><span class="ib-icon">🌍</span><div class="ib-label">Found In</div><div class="ib-val" id="m-found"></div></div>
+        <div class="info-box"><span class="ib-icon">⏳</span><div class="ib-label">Lifespan</div><div class="ib-val" id="m-lifespan"></div></div>
+        <div class="info-box full"><span class="ib-icon">👶</span><div class="ib-label">Baby Name & Family Life</div><div class="ib-val" id="m-baby"></div></div>
+      </div>
+      <div class="conserv" id="m-conserv">
+        <span class="conserv-badge" id="m-cbadge"></span>
+        <span class="conserv-text" id="m-ctext"></span>
+      </div>
+      <div class="fun-facts">
+        <div class="ff-title">🌟 Amazing Facts!</div>
+        <ul class="ff-list" id="m-facts"></ul>
+      </div>
+    </div>
+    <button class="m-close" id="m-close" onclick="closeModalBtn()">Close & Keep Exploring! 🦁</button>
+  </div>
+</div>
+
+<script>
+// ══════════ UI SOUND ENGINE ══════════
+let AC=null;
+function gAC(){if(!AC)AC=new(window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();return AC}
+function tone(f,t,v,d,del=0){setTimeout(()=>{try{const ac=gAC(),o=ac.createOscillator(),g=ac.createGain();o.connect(g);g.connect(ac.destination);o.type=t||'sine';o.frequency.value=f;g.gain.setValueAtTime(v||.15,ac.currentTime);g.gain.exponentialRampToValueAtTime(0.001,ac.currentTime+(d||.3));o.start();o.stop(ac.currentTime+(d||.3))}catch(e){}},del)}
+const sndPop    = ()=>tone(420,'triangle',.22,.08);
+const sndWhoosh = ()=>{try{const ac=gAC(),o=ac.createOscillator(),g=ac.createGain();o.connect(g);g.connect(ac.destination);o.frequency.setValueAtTime(500,ac.currentTime);o.frequency.exponentialRampToValueAtTime(80,ac.currentTime+.3);g.gain.setValueAtTime(.18,ac.currentTime);g.gain.exponentialRampToValueAtTime(0.001,ac.currentTime+.3);o.start();o.stop(ac.currentTime+.35)}catch(e){}};
+const sndChime  = ()=>[523,659,784,1047].forEach((f,i)=>tone(f,'sine',.12,.3,i*80));
+const sndCorrect= ()=>[523,659,784,1047].forEach((f,i)=>tone(f,'sine',.13,.25,i*70));
+const sndWrong  = ()=>[350,280,220].forEach((f,i)=>tone(f,'sawtooth',.1,.18,i*80));
+
+// ══════════════ ANIMAL DATA ══════════════
+const CATS={
+  wild:{name:'Wild Animals 🦁',color:'#8B4513',light:'#f5ede0',btn:'linear-gradient(135deg,#8B4513,#6B3410)'},
+  birds:{name:'Birds 🐦',color:'#4a7c59',light:'#eef5ec',btn:'linear-gradient(135deg,#4a7c59,#2d5a3d)'},
+  marine:{name:'Marine Life 🐠',color:'#2a6496',light:'#e8f2fa',btn:'linear-gradient(135deg,#2a6496,#1a4a73)'},
+  amphibians:{name:'Amphibians 🐸',color:'#5a8a3c',light:'#edf5e8',btn:'linear-gradient(135deg,#5a8a3c,#3d6b28)'},
+  reptiles:{name:'Reptiles 🦎',color:'#b5860d',light:'#faf3e0',btn:'linear-gradient(135deg,#b5860d,#8a6200)'},
+  domestic:{name:'Domestic Animals 🐕',color:'#7a5c3a',light:'#f5ede0',btn:'linear-gradient(135deg,#7a5c3a,#5c4020)'},
+  insects:{name:'Insects & Bugs 🦋',color:'#6b8e23',light:'#eef5e0',btn:'linear-gradient(135deg,#6b8e23,#4a6b12)'},
+  prehistoric:{name:'Prehistoric 🦕',color:'#6b5a3a',light:'#f0ebe0',btn:'linear-gradient(135deg,#6b5a3a,#4a3e28)'},
+};
+
+// [emoji, name, sciName, category, wikiKey, sound, diet, habitat, size, weight, foundIn, lifespan, baby, conservation, conservText, facts[]]
+const ANIMALS=[
+// ── WILD ──
+['🦁','Lion','Panthera leo','wild','Lion','roar','Carnivore — eats zebras, wildebeest, buffalo','Grasslands & savannas','1.8 – 2.1 m body','120 – 250 kg','Sub-Saharan Africa','10–14 years wild','Cub — lives in family groups called PRIDES','en','Endangered — fewer than 25,000 remain in the wild',['A lion\'s roar can be heard 8 km away!','Only lions live in social groups called prides','Female lions do 90% of the hunting','A lion can sleep up to 20 hours a day!','Lions are the second largest big cat in the world']],
+['🐯','Bengal Tiger','Panthera tigris tigris','wild','Bengal_tiger','roar','Carnivore — deer, wild boar, buffalo','Dense forests & mangroves','2.7 – 3.1 m total length','180 – 260 kg','India, Bangladesh, Nepal','10–15 years wild','Cub — cubs are born blind and stay with mum for 2–3 years','en','Endangered — only ~2,500 left in the wild',['No two tigers have the same stripe pattern','Tigers are excellent swimmers and love water','A tiger can leap 9 metres in a single bound!','Tigers hunt alone, mostly at night','They mark their territory with a scent gland spray']],
+['🐘','African Elephant','Loxodonta africana','wild','African_elephant','trumpet','Herbivore — grass, leaves, bark, fruit','Savannas, forests, deserts','Up to 4 m tall','4,000 – 7,000 kg','Sub-Saharan Africa','60–70 years','Calf — largest land animal baby, can walk within hours!','vu','Vulnerable — habitat loss and poaching are threats',['Elephants use their trunks to drink, smell AND say hello!','They can recognise themselves in a mirror','Elephants mourn their dead and visit bones of loved ones','A baby elephant is looked after by the whole herd','They communicate through vibrations in the ground']],
+['🦒','Giraffe','Giraffa camelopardalis','wild','Giraffe','generic','Herbivore — acacia leaves, flowers, fruits','Open woodland & savannas','5 – 6 m tall','750 – 1,200 kg','Sub-Saharan Africa','20–25 years','Calf — born 1.8 m tall, already taller than most humans!','vu','Vulnerable — giraffe numbers dropped 40% in 30 years',['A giraffe\'s tongue is 45–50 cm long and purple!','They only sleep 30 minutes a day in short naps','A giraffe\'s kick can kill a lion','Baby giraffes can walk within hours of birth','Their neck has only 7 vertebrae — same as humans!']],
+['🐆','Cheetah','Acinonyx jubatus','wild','Cheetah','growl','Carnivore — gazelles, rabbits, birds','Open grasslands & semi-arid areas','1.1 – 1.5 m body','21 – 72 kg','Africa and parts of Iran','10–12 years wild','Cub — mothers raise cubs alone for up to 18 months','vu','Vulnerable — only ~7,000 left in the wild',['The fastest land animal — can sprint at 112 km/h!','Unlike other big cats, cheetahs can\'t roar — they purr!','They can go from 0 to 100 km/h in just 3 seconds!','Cheetahs hunt by day using their incredible vision','Their spots help them camouflage in tall grass']],
+['🐺','Grey Wolf','Canis lupus','wild','Grey_wolf','howl','Carnivore — deer, elk, bison','Forests, tundra, mountains','1 – 1.6 m body','25 – 55 kg','North America, Europe, Asia','6–8 years wild','Pup — wolf pups are born deaf and blind','lc','Least Concern — but populations vary widely',['Wolves communicate through howls, growls and whimpers','A wolf pack is a family with a mum, dad and children','They can travel 50 km in a single day','Their howl can be heard 10 km away','Wolves are the ancestors of all domestic dogs!']],
+['🦏','White Rhinoceros','Ceratotherium simum','wild','White_rhinoceros','generic','Herbivore — grass, leaves','Grasslands & savannas','3.5 – 4.6 m body','1,800 – 2,700 kg','Southern Africa','40–50 years','Calf — stays with mum for 2–3 years','nt','Near Threatened — horns are made of keratin, like our nails',['A rhino\'s horn is made of the same stuff as your fingernails!','Rhinos love mud baths to cool down and protect their skin','Despite poor eyesight, they have excellent hearing','A group of rhinos is called a CRASH!','They can run up to 50 km/h despite their huge size']],
+['🦛','Hippopotamus','Hippopotamus amphibius','wild','Hippopotamus','generic','Herbivore — grasses','Rivers, lakes, wetlands','3.3 – 5.2 m body','1,500 – 3,200 kg','Sub-Saharan Africa','40–50 years','Calf — babies are born underwater!','vu','Vulnerable — threatened by habitat loss and hunting',['Hippos produce a natural red "sunscreen" from their skin!','They can hold their breath underwater for 5 minutes','Despite looking slow, hippos run at 30 km/h on land','Hippos are more closely related to whales than to pigs','They are considered one of the most dangerous animals']],
+['🐻','Brown Bear','Ursus arctos','wild','Brown_bear','growl','Omnivore — fish, berries, nuts, honey, insects','Forests and mountains','1.7 – 2.8 m tall','80 – 600 kg','North America, Europe, Asia','20–30 years','Cub — born tiny (500g!) while mum hibernates in winter','lc','Least Concern globally but some populations threatened',['Bears can smell food from 30 km away!','They hibernate for up to 7 months in winter','A bear cub is born the size of a guinea pig','Bears are excellent swimmers and climbers','Grizzly bears can run at 55 km/h']],
+['🦊','Red Fox','Vulpes vulpes','wild','Red_fox','squeak','Omnivore — rabbits, birds, fruit, insects','Forests, fields, urban areas','45 – 90 cm body','3 – 11 kg','Europe, Asia, North America, Australia','3–4 years wild','Kit or Cub — foxes have 4–6 kits per litter','lc','Least Concern — one of the most adaptable animals',['Foxes use the Earth\'s magnetic field to hunt prey!','They can make over 40 different sounds','Foxes are the only cat-like canine — they can retract claws','A fox\'s home is called an earth or a den','Red foxes are now found on every continent except Antarctica']],
+['🐼','Giant Panda','Ailuropoda melanoleuca','wild','Giant_panda','generic','Herbivore — bamboo (99% of diet)','Bamboo mountain forests','1.2 – 1.9 m body','75 – 135 kg','Central China','15–20 years wild','Cub — born pink, blind and tiny (150g!) — 1/900 of mum\'s weight!','vu','Vulnerable — but recovering thanks to conservation!',['A panda eats 12–38 kg of bamboo EVERY SINGLE DAY!','They have a special enlarged wrist bone that works like a thumb','Giant pandas are excellent tree climbers','Baby pandas are 900 times smaller than their mothers at birth','They communicate by bleating like a goat!']],
+['🦧','Orangutan','Pongo pygmaeus','wild','Orangutan','generic','Omnivore — fruit, leaves, bark, insects','Tropical rainforests','1.2 – 1.5 m tall','30 – 90 kg','Borneo and Sumatra','35–45 years','Infant — longest childhood of any animal (7–8 years with mum!)','cr','Critically Endangered — deforestation is their biggest threat',['Orangutans share 97% of their DNA with humans','They are the largest tree-dwelling animals','Orangutans use leaves as umbrellas in the rain!','They build a new nest every night high in the trees','Mums teach babies everything — it takes 7 years!']],
+['🐆','Snow Leopard','Panthera uncia','wild','Snow_leopard','growl','Carnivore — blue sheep, ibex, deer','High mountain ranges','1 – 1.3 m body','27 – 55 kg','Central Asia, Himalayas','10–12 years wild','Cub — stay with mum for 18–22 months','vu','Vulnerable — only 4,000–6,500 remain in the wild',['Snow leopards can\'t roar — they make a chuffing sound!','Their tail is nearly as long as their body for balance','They can leap 15 metres horizontally in one jump!','Their huge paws act like natural snowshoes','Snow leopards are sometimes called "ghosts of the mountains"']],
+['🦓','Zebra','Equus quagga','wild','Plains_zebra','neigh','Herbivore — grasses, leaves, bark','Savannas and grasslands','2.2 – 2.5 m body','175 – 385 kg','East and Southern Africa','20–25 years','Foal — a foal can walk within minutes of birth!','lc','Least Concern — but declining in some regions',['Every zebra has a totally unique stripe pattern — like fingerprints!','Stripes may confuse biting insects or predators','A group of zebras is called a DAZZLE!','Baby zebras learn their mum\'s unique stripe pattern','Zebras stand up to sleep — they rarely lie down']],
+['🦍','Mountain Gorilla','Gorilla beringei beringei','wild','Mountain_gorilla','generic','Herbivore — leaves, shoots, stems, fruit','High mountain forests','1.4 – 1.8 m tall','100 – 200 kg','Uganda, Rwanda, DR Congo','35–40 years','Infant — carried on mum\'s back for the first year','cr','Critically Endangered — only about 1,000 remain!',['Gorillas share 98.3% of their DNA with humans','They build a new sleeping nest every single night','A gorilla\'s fingerprints are as unique as a human\'s','They can learn sign language to communicate with humans','Gorilla groups are led by a silverback — the oldest male']],
+['🐊','Nile Crocodile','Crocodylus niloticus','reptiles','Nile_crocodile','hiss','Carnivore — fish, zebra, wildebeest','Rivers, lakes, wetlands','3.5 – 6 m long','225 – 750 kg','Africa and Madagascar','70–100 years','Hatchling — mothers carry babies in their mouth to water!','lc','Least Concern — one of Africa\'s top predators',['Crocodiles haven\'t changed in 200 million years!','They can go months without eating','Crocodiles swallow stones to help digest food','Despite no lips, crocodiles are excellent mothers','A croc can run 17 km/h on land in short bursts']],
+['🦅','Bald Eagle','Haliaeetus leucocephalus','birds','Bald_eagle','screech','Carnivore — mainly fish','Near large open waters','70 – 102 cm body','3 – 6.3 kg','North America','20–30 years wild','Eaglet — baby eagles take 35 days to hatch','lc','Least Concern — recovered from near extinction in the 1970s!',['A bald eagle\'s eyesight is 4–8 times sharper than a human\'s!','They can spot fish from 1 km away','They mate for life and return to the same nest each year','Bald eagle nests can weigh over 1,000 kg!','They can dive at 120–160 km/h']],
+
+// ── BIRDS ──
+['🦜','African Grey Parrot','Psittacus erithacus','birds','African_grey_parrot','chirp','Omnivore — seeds, nuts, fruit, berries','Tropical rainforests','33 cm body','400 – 600 g','West and Central Africa','40–60 years','Chick — parents care for chicks for about 12 weeks','en','Endangered — illegal pet trade is a major threat',['African Greys can learn over 1,000 words!','They can understand concepts like colour and shape','They are as intelligent as a 5-year-old human child','They can mimic any sound they hear perfectly','One famous grey named Alex learned to count to 6!']],
+['🐧','Emperor Penguin','Aptenodytes forsteri','birds','Emperor_penguin','chirp','Carnivore — fish, squid, krill','Antarctic ice sheets','1.1 – 1.3 m tall','22 – 45 kg','Antarctica','15–20 years','Chick — dads balance the egg on their feet for 65 days in blizzards!','nt','Near Threatened — climate change melts their sea ice home',['Emperor penguins can dive to 535 m deep!','They huddle in groups of thousands to stay warm in -60°C','Dads don\'t eat for 4 months while incubating the egg!','They can hold their breath for 22 minutes','Chicks are the most dedicated dads in the animal kingdom']],
+['🦚','Indian Peafowl','Pavo cristatus','birds','Indian_peafowl','screech','Omnivore — insects, plants, small reptiles','Forests and farmland','Males: up to 2.3 m with tail','4 – 6 kg','Indian Subcontinent','15–20 years','Peachick — the beautiful tail only grows after 3 years','lc','Least Concern — national bird of India 🇮🇳',['A peacock\'s tail is called a TRAIN — it can be 1.5 m long!','The tail feathers have eye-like patterns called ocelli','Peacocks fan their tails to attract peahens','They can fly despite having such huge tails!','Their call sounds like they are saying "help!"']],
+['🦩','Flamingo','Phoenicopterus roseus','birds','Flamingo','chirp','Omnivore — algae, shrimp, plankton','Salt lakes and lagoons','110 – 145 cm tall','2 – 4 kg','Africa, South Asia, Southern Europe','20–30 years','Chick — born white! Pink colour comes from food!','lc','Least Concern',['Flamingos are pink ONLY because of what they eat!','They eat with their heads upside down!','A group of flamingos is called a FLAMBOYANCE!','They can fly at 60 km/h and travel 500–600 km in one night','One-legged standing actually takes less energy']],
+['🦅','Golden Eagle','Aquila chrysaetos','birds','Golden_eagle','screech','Carnivore — rabbits, hares, ground squirrels','Mountains and open country','66 – 102 cm body','3 – 6.7 kg','North America, Europe, Asia, Africa','30 years wild','Eaglet — nests called eyries, perched on high cliffs','lc','Least Concern — one of the most widespread eagles',['Golden eagles can spot a rabbit from 3 km away!','They can dive at 240–320 km/h — faster than a race car!','They mate for life and use the same nest for decades','Their wingspan can reach 2.3 metres','They have been used in falconry for over 4,000 years']],
+['🦉','Great Horned Owl','Bubo virginianus','birds','Great_horned_owl','chirp','Carnivore — rabbits, rodents, birds','Forests, deserts, urban areas','45 – 63 cm body','0.9 – 2.5 kg','Americas','5–15 years wild','Owlet — owlets are one of the earliest birds to nest, even in winter','lc','Least Concern',['Owls can rotate their heads 270 degrees!','They have absolutely silent flight thanks to special feathers','Their "horns" are actually ear tufts — not ears or horns!','Owls can\'t move their eyeballs — they move their whole head','A group of owls is called a PARLIAMENT!']],
+['🐦','Arctic Tern','Sterna paradisaea','birds','Arctic_tern','chirp','Carnivore — small fish, krill','Open ocean and coasts','33 – 39 cm body','86 – 127 g','Arctic to Antarctic (migrating!)','20–30 years','Chick — nests on the ground in colonies','lc','Least Concern',['Arctic terns migrate 90,000 km every year — the longest migration!','They see more daylight than any other animal on Earth!','They live to 30+ years so travel about 2.4 million km lifetime!','Arctic terns dive into the water to catch fish','A group is called a COLONY or a CRASH of terns']],
+['🦆','Mallard Duck','Anas platyrhynchos','birds','Mallard','chirp','Omnivore — plants, seeds, insects, small fish','Wetlands, lakes, ponds','50 – 65 cm body','0.7 – 1.6 kg','North America, Europe, Asia','5–10 years','Duckling — can swim within hours of hatching!','lc','Least Concern — one of the most common wild ducks',['Only female mallards make the classic QUACK sound!','Males (drakes) have brilliant green heads','Ducklings "imprint" on whoever they see first after hatching','They can sleep with one eye open to watch for predators','Mallards can fly at 55–65 km/h']],
+['🦜','Macaw','Ara macao','birds','Scarlet_macaw','chirp','Herbivore — seeds, nuts, fruit, clay','Tropical rainforests','81 – 96 cm total length','900 g – 1.5 kg','Central and South America','40–50 years','Chick — parents and chicks communicate with special calls','lc','Least Concern — but some species are endangered',['Macaws eat clay from riverbanks to neutralise toxins in their food!','They can crack nuts that humans need tools to open','Macaws mate for life and are inseparable from their partner','Their beak is so strong it can bend steel bars!','They can mimic human speech and hundreds of sounds']],
+['🐦','Hummingbird','Archilochus colubris','birds','Ruby-throated_hummingbird','chirp','Nectarivore — flower nectar, small insects','Gardens, forests, meadows','7 – 13 cm body','2 – 6 g','Americas','3–5 years','Chick — hatches in a nest the size of a thimble!','lc','Least Concern',['Hummingbirds flap their wings 80 times per SECOND!','They are the only birds that can fly backwards!','Their heart beats up to 1,260 times per minute!','They visit 1,000–2,000 flowers every day','Despite their size, they can fly 500 km nonstop in migration!']],
+['🦢','Mute Swan','Cygnus olor','birds','Mute_swan','chirp','Herbivore — aquatic plants, algae','Lakes, rivers, ponds','145 – 160 cm body','8 – 14 kg','Europe and Asia','20–30 years','Cygnet — baby swans are grey and fluffy','lc','Least Concern',['Swans mate for life — they are a symbol of love worldwide','A group of swans is called a BEVY or a WEDGE when flying','Baby swans (cygnets) often ride on parents\' backs','Mute swans aren\'t truly mute — they hiss and grunt','They can have up to 25,000 feathers!']],
+['🦤','Dodo','Raphus cucullatus','prehistoric','Dodo','chirp','Herbivore — fruits, seeds, roots, nuts','Forests of Mauritius','1 m tall','10 – 18 kg','Island of Mauritius (extinct)','Likely 10–15 years','Chick — nested on the ground, which made eggs vulnerable','ex','Extinct — humans hunted them to extinction by 1681',['Dodos had no fear of humans because they had no predators','They went extinct just 80 years after Europeans arrived','We\'ve reconstructed what they looked like from old paintings','The phrase "dead as a dodo" comes from their extinction','Scientists are trying to bring them back using DNA!']],
+['🦜','Kiwi Bird','Apteryx australis','birds','Southern_brown_kiwi','chirp','Omnivore — worms, grubs, fruit, seeds','Forests and scrubland','45 – 55 cm body','1.4 – 5 kg','New Zealand','25–50 years','Chick — kiwi eggs are huge (20% of mother\'s body weight)!','vu','Vulnerable — predators like cats and stoats are a big threat',['Kiwis are the only birds with nostrils at the tip of their beak!','They have cat-like whiskers to feel in the dark','Their egg is 6 times larger than a hen\'s egg relative to size','Kiwis are completely nocturnal','They are more closely related to ostriches than parrots']],
+['🐦','Secretary Bird','Sagittarius serpentarius','birds','Secretarybird','screech','Carnivore — snakes, lizards, insects, rodents','Open grasslands and savannas','1.1 – 1.5 m tall','2.3 – 4.3 kg','Sub-Saharan Africa','10–15 years','Chick — parents bring food to the nest for weeks','vu','Vulnerable — grassland loss is shrinking their habitat',['Secretary birds can kill a cobra with a kick 5x their body weight!','They walk up to 20 km a day hunting on foot','They stamp on their prey to stun it before eating','Named because they look like an 18th-century secretary with pens behind their ear!','They can deliver a kick with 195 Newtons of force']],
+
+// ── MARINE ──
+['🐋','Blue Whale','Balaenoptera musculus','marine','Blue_whale','splash','Carnivore — krill (up to 4 tonnes daily!)','Open oceans worldwide','25 – 30 m long','100,000 – 200,000 kg','All major oceans','80–90 years','Calf — born 8 m long and gains 90 kg a day!','en','Endangered — hunting nearly wiped them out last century',['Blue whales are the LARGEST animals ever to exist on Earth!','Their heartbeat is so slow you can hear it from 3 km away!','A blue whale\'s tongue weighs as much as an elephant','Their call is louder than a jet engine — 188 decibels!','Calves drink 600 litres of milk every day!']],
+['🐬','Bottlenose Dolphin','Tursiops truncatus','marine','Common_bottlenose_dolphin','click','Carnivore — fish, squid, shrimp','Coastal and open ocean','2 – 4 m long','150 – 650 kg','Worldwide oceans','20–30 years','Calf — calves stay with mum for 3–6 years','lc','Least Concern — one of the most common dolphin species',['Dolphins sleep with one eye open!','They use echolocation to find prey in dark water','Each dolphin has a unique whistle — like a name!','Dolphins have been known to save drowning humans','They can swim at 30 km/h and leap 4.9 m in the air!']],
+['🦈','Great White Shark','Carcharodon carcharias','marine','Great_white_shark','splash','Carnivore — seals, sea lions, fish','Coastal and open ocean','4.6 – 6 m long','520 – 2,250 kg','Worldwide except polar regions','30–70 years','Pup — sharks are born fully formed and immediately independent','vu','Vulnerable — finning and fishing threaten their numbers',['Great whites can detect blood in water from 5 km away!','They have 300 teeth in multiple rows — they never run out','Their skin feels like sandpaper — made of tiny tooth-like scales','Great whites can jump 3 metres out of the water!','They are older as a species than trees — 450 million years old']],
+['🐙','Giant Octopus','Enteroctopus dofleini','marine','Giant_Pacific_octopus','splash','Carnivore — crabs, shrimp, fish','Rocky ocean floors','Up to 6 m arm span','15 – 75 kg','Pacific Ocean','3–5 years','Larva — females lay 100,000 eggs and die after they hatch','lc','Least Concern',['Octopuses have THREE hearts and BLUE blood!','They can change colour and texture in milliseconds','Each arm has its own mini-brain','They can open jars, solve puzzles and recognise human faces','If an arm is cut off it grows back!']],
+['🐠','Clownfish','Amphiprioninae','marine','Clownfish','splash','Omnivore — algae, zooplankton, small invertebrates','Coral reefs','7 – 17 cm body','250 g','Indian and Pacific Oceans','6–10 years','Fry — live inside sea anemones for protection','lc','Least Concern — but coral reef loss is a concern',['All clownfish are born male! The dominant one becomes female.','They are immune to the stinging tentacles of sea anemones','They make a clicking and popping sound to communicate','Clownfish never travel far from their home anemone','Finding Nemo made clownfish one of the world\'s most famous fish!']],
+['🐢','Leatherback Sea Turtle','Dermochelys coriacea','marine','Leatherback_sea_turtle','generic','Carnivore — jellyfish (mainly)','Open oceans worldwide','1.8 – 2.1 m long','250 – 900 kg','Worldwide oceans','45–50 years','Hatchling — babies rush to the sea immediately after hatching','vu','Vulnerable — plastic pollution and fishing nets are deadly threats',['Leatherbacks can dive to 1,280 m depth!','They can swim 10,000 km to reach nesting beaches','They are the largest sea turtles — bigger than a human!','Their mouths have spines to prevent jellyfish from escaping','They have existed for 100 million years!']],
+['🦭','Harp Seal','Pagophilus groenlandicus','marine','Harp_seal','generic','Carnivore — fish, krill, crustaceans','Arctic ice and cold seas','1.5 – 1.9 m long','120 – 135 kg','North Atlantic & Arctic Ocean','30 years','Pup — born with white fluffy fur, turns grey after 3 weeks','lc','Least Concern — but climate change threatens sea ice habitat',['Baby harp seals are born with bright white fur for camouflage!','They can hold their breath for 15 minutes','Seals can sleep underwater, rising automatically to breathe','Their whiskers are incredibly sensitive — like sonar detectors','Harp seals can dive to 270 metres deep']],
+['🦑','Giant Squid','Architeuthis dux','marine','Giant_squid','splash','Carnivore — fish and other squid','Deep ocean (200–1,000 m)','Up to 13 m total length','Up to 275 kg','All major oceans','5 years','Larva — giant squid are rarely seen alive in the wild!','lc','Least Concern — but very little is known about them',['Giant squid have the largest eyes of any living animal — 30 cm wide!','They inspired the legendary Kraken sea monster!','They use jet propulsion to swim by squirting water','They can change colour using chromatophores in their skin','Only dead ones had been seen until 2004 — first live footage!']],
+['🐡','Puffer Fish','Tetraodontidae','marine','Puffer_fish','splash','Omnivore — algae, invertebrates, molluscs','Tropical and subtropical seas','2.5 cm – 60 cm','small to 14 kg','Tropical oceans worldwide','4–8 years','Fry — born as tiny larvae in open water','lc','Least Concern',['Pufferfish are the second most poisonous vertebrate on Earth!','They inflate to 3x their normal size when threatened','Their poison (tetrodotoxin) is 1,200x more toxic than cyanide','Despite being poisonous, pufferfish is a delicacy in Japan','Males create elaborate circular patterns on the ocean floor to attract females']],
+['🦐','Mantis Shrimp','Stomatopoda','marine','Mantis_shrimp','click','Carnivore — crabs, fish, clams','Tropical coral reefs','5 – 38 cm body','Small — various species','Indian and Pacific Oceans','4–20 years','Larva — carry eggs until hatching, fiercely protecting them','lc','Least Concern',['Mantis shrimp can punch with the force of a bullet!','They can see 16 types of colour — humans see only 3!','Their punch is the fastest movement in the animal kingdom','They can break aquarium glass with a single punch','They have been known to recognise individual human faces']],
+['🐳','Humpback Whale','Megaptera novaeangliae','marine','Humpback_whale','splash','Carnivore — krill, small fish','All major oceans','12 – 16 m long','25,000 – 40,000 kg','Worldwide oceans','45–50 years','Calf — born 4–5 m long, nursed for nearly a year','lc','Least Concern — recovered thanks to a 1986 hunting ban!',['Humpback whales sing complex songs that last up to 22 hours!','Only males sing — to attract females','Their songs evolve and change over the seasons','They can leap completely out of the water (breaching)','A humpback was recorded travelling 9,800 km in 9 weeks!']],
+
+// ── AMPHIBIANS ──
+['🐸','Poison Dart Frog','Dendrobatidae','amphibians','Dendrobatidae','croak','Carnivore — tiny insects, mites, ants','Tropical rainforest floors','1 – 6 cm body','1 – 7 g','Central and South America','3–15 years','Tadpole — mum or dad carries tadpoles on their back to water!','lc','Least Concern — but habitat loss is a threat',['Their skin is bright to warn predators: "I am toxic!"','Their poison comes from the insects they eat','In captivity without wild insects, they lose their toxicity!','Local tribes use their poison on blowpipe darts','One golden poison frog has enough toxin to kill 10 humans']],
+['🐸','Red-Eyed Tree Frog','Agalychnis callidryas','amphibians','Red-eyed_tree_frog','croak','Carnivore — insects, crickets, flies','Tropical rainforests','4 – 7 cm body','6 – 15 g','Central America','5 years','Tadpole — eggs are laid on leaves above water, tadpoles drop in!','lc','Least Concern',['Those giant red eyes can startle predators for a split second!','They sleep during the day and hunt at night','Their toe pads are covered in mucus for gripping leaves','They can change their skin shade from bright to dark green','One of the most photographed animals in the world!']],
+['🦎','Axolotl','Ambystoma mexicanum','amphibians','Axolotl','croak','Carnivore — worms, insects, small fish','Lake Xochimilco, Mexico','15 – 45 cm body','60 – 100 g','Mexico City lakes only','10–15 years','Larva — they keep their tadpole-like features their whole life!','cr','Critically Endangered — wild population nearly extinct',['Axolotls can regrow lost limbs, eyes, even parts of their brain!','They never truly "grow up" — a trait called neoteny','They walk on the lake bottom instead of swimming freely','Only found naturally in ONE lake in Mexico City','They are sometimes called "water monsters" in the local language']],
+['🐸','Common Toad','Bufo bufo','amphibians','Common_toad','croak','Carnivore — insects, worms, slugs','Gardens, forests, wetlands','6 – 15 cm body','20 – 100 g','Europe, Asia','10–40 years','Toadlet — toadlets are tiny — the size of your thumbnail!','lc','Least Concern',['Toads return to the exact same pond where they were born to breed!','Their skin produces a toxic substance that tastes horrible to predators','Unlike frogs, toads have drier, bumpier skin','They can survive temperatures below freezing by partial hibernation','Toads eat slugs and pests, making them great for gardens!']],
+['🦎','Chinese Giant Salamander','Andrias davidianus','amphibians','Chinese_giant_salamander','croak','Carnivore — fish, frogs, crabs','Mountain rivers and streams','up to 1.8 m long','up to 50 kg','China','60–80 years','Larva — male guards the nest of eggs until they hatch','cr','Critically Endangered — almost hunted to extinction for food',['World\'s largest amphibian — as long as a tall adult human!','They make sounds like a crying baby — called "baby fish" in Chinese','They breathe mostly through their skin','They have remained virtually unchanged for 170 million years','Less than 50,000 remain in the wild']],
+['🐸','Glass Frog','Centrolenidae','amphibians','Glass_frog','croak','Carnivore — insects, spiders','Tropical rainforest streams','3 – 7.5 cm body','5 – 14 g','Central and South America','10–14 years','Tadpole — eggs are laid on leaves, dad guards them','lc','Least Concern',['You can see their heart beating through their transparent skin!','Their organs, bones and even beating heart are all visible!','Glass frogs are nocturnal and love humid rainforest','They camouflage brilliantly on green leaves during the day','Different species have hearts that appear red, yellow or green']],
+
+// ── REPTILES ──
+['🐍','King Cobra','Ophiophagus hannah','reptiles','King_cobra','hiss','Carnivore — mainly other snakes!','Tropical forests','3.6 – 5.5 m long','6 – 12 kg','South and Southeast Asia','20 years','Hatchling — king cobras are the ONLY snakes that build nests!','vu','Vulnerable — habitat destruction threatens their forests',['King cobras are the world\'s longest venomous snake!','They eat mainly other snakes — including pythons!','They are the only snake that builds a nest for their eggs','Their hood is made of moveable ribs','One bite can kill an elephant!']],
+['🦎','Komodo Dragon','Varanus komodoensis','reptiles','Komodo_dragon','hiss','Carnivore — deer, pigs, goats, carrion','Dry savannas and forests','2.5 – 3 m long','70 – 91 kg','Indonesian islands only','30 years','Hatchling — females can reproduce without a male (parthenogenesis)!','en','Endangered — found only on a few Indonesian islands',['Komodo dragons are the largest living lizards on Earth!','Their saliva contains deadly bacteria and venom','They can run at 20 km/h over short distances','Females can produce eggs without mating!','They use their forked tongue to "smell" the air']],
+['🐢','Galápagos Tortoise','Chelonoidis niger','reptiles','Galápagos_tortoise','generic','Herbivore — cactus, grasses, leaves, fruit','Volcanic islands — Galápagos','Over 1.5 m long','up to 400 kg','Galápagos Islands only','100–150+ years','Hatchling — take 5 months to hatch from eggs buried in sand','vu','Vulnerable — conservation has helped numbers recover',['Galápagos tortoises can live longer than 150 years!','They can survive a whole year without food or water','Charles Darwin\'s observations of them helped inspire evolution theory','They sleep up to 16 hours a day to conserve energy','Some famous ones have lived to be over 175 years old!']],
+['🦎','Chameleon','Chamaeleonidae','reptiles','Veiled_chameleon','hiss','Carnivore — insects, small birds','Tropical and mountain forests','13 – 68 cm body','30 – 170 g','Africa, Madagascar, Asia, Europe','5–10 years','Hatchling — born self-sufficient and immediately start hunting','lc','Least Concern overall, but some species threatened',['Chameleons change colour to communicate mood, NOT to camouflage!','Each eye moves independently — they see 360 degrees!','Their tongue is 1.5x longer than their body and shoots in 0.07 seconds!','Their feet are like clamps, perfectly shaped for branches','They can see both visible and ultraviolet light']],
+['🐍','Ball Python','Python regius','reptiles','Ball_python','hiss','Carnivore — small mammals, birds','Grasslands and forests','90 cm – 1.5 m long','1.4 – 1.8 kg','West and Central Africa','20–30 years','Hatchling — females coil around eggs to incubate them','lc','Least Concern — but heavily traded as pets',['Ball pythons curl into a ball when scared — hence the name!','They are one of the most popular pet snakes worldwide','They can go a whole year without eating when not hungry','They feel the heat of their prey through pit organs','They swallow prey whole and then don\'t eat again for weeks']],
+['🦎','Marine Iguana','Amblyrhynchus cristatus','reptiles','Marine_iguana','hiss','Herbivore — underwater algae and seaweed','Rocky volcanic coastlines','60 cm – 1.7 m total','1 – 13 kg','Galápagos Islands only','25–60 years','Hatchling — young iguanas are black for camouflage','vu','Vulnerable — oil spills and climate change are threats',['Marine iguanas are the only lizards in the world that swim in the ocean!','They dive up to 9 m to graze on algae','They sneeze out excess salt through their nostrils — look white after!','They can shrink their body in food scarcity and regrow later','Charles Darwin found them so ugly he called them "imps of darkness"!']],
+['🐊','Saltwater Crocodile','Crocodylus porosus','reptiles','Saltwater_crocodile','hiss','Carnivore — fish, turtles, birds, mammals','Coastal saltwater and rivers','4 – 7 m long','400 – 1,000 kg','Southeast Asia to Australia','70+ years','Hatchling — mums carry hatchlings to water in their mouths gently','lc','Least Concern — but habitat threatened',['Saltwater crocodiles are the largest living reptiles on Earth!','They can swim 900 km out to sea','Their bite force is the strongest of any animal — ever measured!','They can lunge half their body length out of water','They have barely changed since the age of dinosaurs']],
+
+// ── DOMESTIC ──
+['🐕','Domestic Dog','Canis lupus familiaris','domestic','Dog','bark','Omnivore — specially prepared dog food, meat, vegetables','Human homes worldwide','Varies wildly by breed','Varies: 1 – 80 kg','Worldwide','10–13 years','Puppy — puppies are born deaf, blind and helpless','lc','Domestic — not rated, but many breeds need care',['Dogs have been our companions for at least 15,000 years!','They can understand over 250 words and gestures','Their nose is 10,000–100,000 times more sensitive than ours','Dogs dream — they run and whimper in their sleep','Every dog nose print is unique — like a human fingerprint']],
+['🐈','Domestic Cat','Felis catus','domestic','Cat','meow','Carnivore — meat-based cat food, birds, mice','Human homes worldwide','45 – 50 cm body','3 – 5 kg typical','Worldwide','12–18 years','Kitten — kittens are born blind and deaf, eyes open at 7–10 days','lc','Domestic',['Cats purr both when happy AND when stressed or in pain!','A cat\'s purr may help heal bones — the frequency promotes healing!','Cats sleep 12–16 hours a day','They can rotate their ears 180 degrees independently','Cats knead with their paws to show contentment, from nursing as kittens']],
+['🐄','Dairy Cow','Bos taurus','domestic','Cattle','moo','Herbivore — grass, hay, silage','Farms and pastures','1.4 – 1.5 m at shoulder','540 – 900 kg','Worldwide on farms','18–22 years','Calf — calves can walk within hours of birth!','lc','Domestic',['A cow produces about 90 glasses of milk every day!','Cows have best friends and get stressed when separated','They can smell things from 10 km away','Cows have a near 360-degree field of vision','They chew their cud (food) for up to 8 hours a day!']],
+['🐎','Horse','Equus ferus caballus','domestic','Horse','neigh','Herbivore — grass, hay, grains','Farms, fields, plains','1.4 – 1.8 m tall (at shoulder)','380 – 1,000 kg','Worldwide','25–30 years','Foal — can walk and run within hours of birth!','lc','Domestic',['Horses can sleep both lying down AND standing up!','They can run at 88 km/h (Thoroughbred top speed)','A horse\'s teeth take up more space in their head than their brain!','They communicate with their ears, eyes and nostrils','Horses have been domesticated for about 6,000 years']],
+['🐓','Chicken','Gallus gallus domesticus','domestic','Chicken','chirp','Omnivore — seeds, insects, worms, scraps','Farms and coops','30 – 45 cm body','1 – 4 kg','Worldwide','5–10 years','Chick — hatches after 21 days, cheeping before even hatching!','lc','Domestic — most numerous bird on Earth (33 billion!)','lc','',['Chickens are the closest living relative of the T-Rex!','They have excellent memories and can recognise 100+ faces','They dream during REM sleep like humans','Chicks can communicate with their mother through the egg shell!','There are more chickens on Earth than any other bird']],
+['🐏','Domestic Sheep','Ovis aries','domestic','Domestic_sheep','squeak','Herbivore — grass, hay, shrubs','Farms and hillsides','1.2 – 1.8 m body','45 – 100 kg','Worldwide on farms','10–12 years','Lamb — lambs recognise their mother\'s call immediately','lc','Domestic',['Sheep can recognise up to 50 other sheep faces for 2 years!','They can recognise human faces and remember them','A sheep\'s pupils are rectangular — giving panoramic vision','Sheep self-medicate by eating specific plants when sick','A group of sheep is called a FLOCK or a MOB']],
+['🐐','Domestic Goat','Capra aegagrus hircus','domestic','Goat','squeak','Herbivore — grass, leaves, shrubs','Farms and rocky hillsides','45 – 60 cm body','20 – 140 kg','Worldwide','15–18 years','Kid — baby goats are called kids and play-fight immediately','lc','Domestic',['Goats were one of the first animals domesticated by humans, 10,000 years ago!','Their rectangular pupils give them 320-degree vision!','They communicate with each other by changing the tone of their bleats','Goats are excellent climbers and can scale near-vertical rock faces','They are highly intelligent and can solve puzzles for food']],
+['🐇','Domestic Rabbit','Oryctolagus cuniculus','domestic','European_rabbit','squeak','Herbivore — hay, vegetables, leafy greens','Homes and hutches','35 – 50 cm body','1.5 – 2.5 kg','Worldwide','8–12 years','Kitten or Kit — born hairless and blind in underground burrows','lc','Domestic',['Rabbits can\'t vomit — so they must eat healthy food!','When happy, they jump and twist — called a BINKY!','Their teeth never stop growing throughout their life','Rabbits can see nearly 360 degrees but have a blind spot in front','They are crepuscular — most active at dawn and dusk']],
+
+// ── INSECTS ──
+['🦋','Monarch Butterfly','Danaus plexippus','insects','Monarch_butterfly','buzz','Herbivore — milkweed plants (larvae), nectar (adults)','Meadows, forests, gardens','10 cm wingspan','0.5 g','North America (migrating to Mexico)','Adult: 2–6 weeks','Caterpillar — goes through complete metamorphosis!','en','Endangered — populations dropped 80% in 20 years',['Monarch butterflies migrate 4,500 km to Mexico every year!','They use the sun as a compass for migration','Their wings are covered in thousands of tiny scales','The caterpillar eats poisonous milkweed — making the adult toxic','Scientists are baffled how they find the same forests every year']],
+['🐝','Honeybee','Apis mellifera','insects','Western_honey_bee','buzz','Herbivore — nectar and pollen','Hives, gardens, meadows','15 mm body','0.1 g','Worldwide (except polar)','Worker: 6 weeks; Queen: 5 years','Larva — started as a tiny egg in a honeycomb cell','lc','Least Concern — but populations declining due to pesticides',['A honeybee visits up to 5,000 flowers in one day!','Bees communicate through a waggle dance showing where flowers are','A single bee makes only 1/12 teaspoon of honey in its lifetime','The queen lays up to 2,000 eggs per day!','Without bees, 1/3 of all food we eat would disappear']],
+['🪲','Atlas Beetle','Chalcosoma atlas','insects','Atlas_beetle','buzz','Herbivore — sap, fruit, decaying wood','Tropical forests','6 – 13 cm body','3 – 10 g','Southeast Asia','1–3 years','Larva — larvae are bigger than the adult beetle!','lc','Least Concern',['Atlas beetles can lift 850 times their own body weight!','Males fight with their huge horns for territory','The larva stage lasts longer than the adult\'s whole life','They are one of the largest beetles in the world','Their horns are actually modified mouthparts']],
+['🐜','Leafcutter Ant','Atta cephalotes','insects','Leafcutter_ant','buzz','Herbivore — they grow their own fungus farm!','Tropical rainforests','1 – 2 cm body','Very light — varies','Central and South America','Workers: weeks; Queen: 15+ years','Larva — queen can lay 150 million eggs in her lifetime!','lc','Least Concern',['Leafcutter ants farm their own food — they grow fungus gardens!','They can carry 50 times their own body weight!','Their colonies have up to 8 million workers','Trails of leafcutter ants can be 30 m wide!','They are one of the world\'s most complex animal societies']],
+['🦟','Dragonfly','Anisoptera','insects','Dragonfly','buzz','Carnivore — mosquitoes, flies, gnats','Near ponds, lakes, wetlands','4 – 8 cm body','Very light','Worldwide except polar','Adult: weeks; larva: years!','Nymph — spend years as water nymphs before flying','lc','Least Concern',['Dragonflies have a 95% hunting success rate — the best of any predator!','Their eyes cover nearly their entire head for 360° vision','They have been flying for 300 million years — before the dinosaurs!','They can fly forwards, backwards and hover perfectly','Dragonfly larvae can live underwater for 5 years before becoming adults']],
+['🦗','Giant Weta','Deinacrida heteracantha','insects','Giant_weta','buzz','Herbivore — leaves, flowers, seeds, fruit','Forests and scrubland','7 – 10 cm body','Up to 71 g — the heaviest insect!','New Zealand','2 years','Nymph — go through 11 moults before adult','vu','Vulnerable — flightless, so very vulnerable to introduced predators',['The Giant Weta is the world\'s heaviest insect!','They are one of the world\'s oldest insect species — 190 million years!','They cannot fly — unique for their family','They survived while dinosaurs went extinct!','A female was found carrying 70 eggs once — amazing for an insect!']],
+['🪳','Cockroach','Periplaneta americana','insects','Cockroach','buzz','Omnivore — almost anything organic','Everywhere — urban and natural','4 cm body','Very light','Worldwide','1–1.5 years','Nymph — nymphs look just like tiny adults','lc','Least Concern — one of the most adaptable animals',['Cockroaches can survive radiation that would kill a human instantly!','They can live for a WEEK without their head!','They can run at 5 km/h — fast for their size','Cockroaches have existed for over 320 million years!','They can hold their breath for 40 minutes underwater']],
+
+// ── PREHISTORIC ──
+['🦕','Brachiosaurus','Brachiosaurus altithorax','prehistoric','Brachiosaurus','generic','Herbivore — ferns, conifers, leaves at treetops','Floodplains and forests','26 m long','56,000 kg','North America and Africa (Jurassic)','~100 years (estimated)','Hatchling — hatched from huge eggs','ex','Extinct — lived 154–150 million years ago',['Brachiosaurus was as tall as a 4-storey building!','Their nostrils were on TOP of their heads','They had to eat constantly to fuel their massive bodies','They held their necks upright like giraffes','Scientists think they were warm-blooded — unusual for reptiles']],
+['🦖','Tyrannosaurus Rex','Tyrannosaurus rex','prehistoric','Tyrannosaurus','roar','Carnivore — large dinosaurs, carrion','Forests and swampy lowlands','12 m long; 4 m tall','8,000 – 14,000 kg','Western North America (Cretaceous)','~30 years (estimated)','Hatchling — babies were feathered and fluffy!','ex','Extinct — lived 68–66 million years ago',['T-Rex had the strongest bite of any land animal ever — 35,000 Newtons!','They may have had feathers as youngsters','T-Rex arms were small but incredibly powerful','Scientists believe T-Rex may have had lips!','Chickens are their closest living relative today!']],
+['🦕','Triceratops','Triceratops horridus','prehistoric','Triceratops','generic','Herbivore — ferns, palms, cycads','Open plains and forests','9 m long; 3 m tall','6,000 – 12,000 kg','Western North America (Cretaceous)','~30 years (estimated)','Hatchling — social animals that lived in herds','ex','Extinct — lived 68–66 million years ago',['Triceratops had the largest skull of any land animal ever!','Their three horns were probably used for display, not just fighting','They were actually peaceful plant-eaters','Triceratops lived right at the very end of the dinosaur age','T-Rex and Triceratops were actual neighbours — they coexisted!']],
+['🦣','Woolly Mammoth','Mammuthus primigenius','prehistoric','Woolly_mammoth','trumpet','Herbivore — grasses, shrubs, mosses','Arctic tundra and steppes','3.4 m tall','5,000 – 6,000 kg','Northern Europe, Asia, North America','~60 years','Calf — raised in family herds like modern elephants','ex','Extinct — died out ~4,000 years ago (some survived until 1700 BC!)',['Scientists are working to bring them back using DNA from frozen specimens!','Their tusks could reach 5 metres long','Woolly mammoths were alive when the pyramids were being built!','Their thick fur was 90 cm long to survive -50°C','Perfectly preserved frozen mammoths have been found in Siberia']],
+['🐊','Mosasaurus','Mosasaurus hoffmanni','prehistoric','Mosasaurus','splash','Carnivore — fish, ammonites, turtles, sharks','Ancient seas worldwide','Up to 17 m long','Estimated 10,000+ kg','Ancient oceans — worldwide','Unknown','Pup — gave birth to live young in the ocean','ex','Extinct — lived 70–66 million years ago',['Mosasaurus was the apex predator of the ancient seas!','Featured in Jurassic World eating the great white shark!','They were actually closely related to modern monitor lizards','Their double-hinged jaws could swallow prey whole','They hunted like crocodiles — ambush from below']],
+['🦅','Pterodactyl','Pteranodon longiceps','prehistoric','Pteranodon','screech','Carnivore — fish, squid','Coastal cliffs and open sea','Wingspan: 6–7 m','20 – 25 kg','North America (Cretaceous)','Unknown','Hatchling — born from eggs on cliff ledges','ex','Extinct — lived 86–84.5 million years ago',['Pteranodon had a wingspan bigger than any modern bird!','Despite popular belief, they were NOT dinosaurs','They were warm-blooded and covered in hair-like fibres','They could soar for hours on thermal air currents','Their crest may have been used like a sail to steer while flying']],
+['🦈','Megalodon','Otodus megalodon','prehistoric','Megalodon','splash','Carnivore — whales, large fish, dolphins','Ancient oceans worldwide','15 – 20 m long','50,000 – 100,000 kg','Ancient oceans (worldwide)','Unknown','Pup — gave birth to live young, possibly in nursery areas','ex','Extinct — lived 23–3.6 million years ago',['Megalodon was the largest shark and fish that ever lived!','Its teeth were 18 cm long — bigger than your hand!','Scientists estimate it could bite with 110,000–180,000 Newtons of force','The Great White shark is a distant relative','Its bite was so powerful it could crush a car in one bite!']],
+];
+
+// CONSERVATION STATUS
+const CSTATUS={lc:{cls:'lc',label:'Least Concern',bg:'#dcfce7',text:'#166534'},nt:{cls:'nt',label:'Near Threatened',bg:'#ecfccb',text:'#365314'},vu:{cls:'vu',label:'Vulnerable',bg:'#fef9c3',text:'#713f12'},en:{cls:'en',label:'Endangered',bg:'#fee2e2',text:'#991b1b'},cr:{cls:'cr',label:'Critically Endangered',bg:'#fce7f3',text:'#9d174d'},ew:{cls:'ew',label:'Extinct in Wild',bg:'#ede9fe',text:'#5b21b6'},ex:{cls:'ex',label:'Extinct',bg:'#f1f5f9',text:'#334155'},domestic:{cls:'lc',label:'Domestic Animal',bg:'#eff6ff',text:'#1e40af'}};
+
+// ══════════════ STATE ══════════════
+let currentAnimal=null;
+let currentCat=null;
+
+// ══════════════ PARTICLES ══════════════
+const PEM=['🦁','🐯','🐘','🦒','🐬','🦋','🐦','🐸','🦎','🐙','🦅','🐺'];
+const pc=document.getElementById('particles');
+for(let i=0;i<18;i++){
+  const p=document.createElement('div');p.className='particle';
+  p.textContent=PEM[i%PEM.length];
+  p.style.left=(Math.random()*100)+'vw';
+  p.style.fontSize=(1.2+Math.random()*1.5)+'rem';
+  p.style.animationDuration=(12+Math.random()*18)+'s';
+  p.style.animationDelay=(Math.random()*20)+'s';
+  pc.appendChild(p);
+}
+
+// ══════════════ SCENE MANAGEMENT ══════════════
+function goIntro(){document.getElementById('s-intro').scrollIntoView({behavior:'smooth'});hideAll();document.getElementById('s-intro').style.display='flex'}
+function goHub(){sndWhoosh();hideAll();document.getElementById('s-hub').classList.add('active');window.scrollTo(0,0)}
+function hideAll(){
+  document.getElementById('s-intro').style.display='none';
+  document.getElementById('s-hub').classList.remove('active');
+  document.getElementById('s-animals').classList.remove('active');
+  document.getElementById('s-search').classList.remove('active');
+  document.getElementById('s-quiz').classList.remove('active');
+}
+
+function goIntro(){
+  
+  hideAll();
+  document.getElementById('s-intro').scrollIntoView({behavior:'smooth'});
+}
+
+// ══════════════ CATEGORY ══════════════
+function openCat(key){
+  sndWhoosh();currentCat=key;
+  const cat=CATS[key];
+  const list=ANIMALS.filter(a=>a[3]===key);
+  document.getElementById('anim-title').textContent=cat.name;
+  document.getElementById('anim-back-btn').style.background=cat.btn;
+  const grid=document.getElementById('animals-grid');
+  grid.innerHTML='';
+  list.forEach((a,i)=>grid.appendChild(buildCard(a,i,cat.color)));
+  hideAll();
+  document.getElementById('s-animals').classList.add('active');
+  document.getElementById('s-animals').style.background=cat.light;
+  window.scrollTo(0,0);
+}
+
+// ══════════════ CARD BUILDER ══════════════
+function buildCard(a,i,color){
+  const card=document.createElement('div');
+  card.className='animal-card';
+  card.style.setProperty('--cat-color',color);
+  card.style.animationDelay=(i*.06)+'s';
+  // image wrapper
+  const iw=document.createElement('div');iw.className='ac-img-wrap';
+  const ph=document.createElement('div');ph.className='ac-img-placeholder';ph.textContent=a[0];
+  const loader=document.createElement('div');loader.className='ac-loading';loader.textContent='🔄';
+  const img=document.createElement('img');img.className='ac-img';img.style.display='none';
+  img.alt=a[1];
+  // Load Wikipedia image
+  fetchWikiImage(a[4],img,ph,loader);
+  iw.appendChild(loader);iw.appendChild(img);iw.appendChild(ph);
+  // sound btn
+  // body
+  const body=document.createElement('div');body.className='ac-body';
+  body.innerHTML=`<div class="ac-name">${a[1]}</div><div class="ac-sciname">${a[2]}</div>
+  <div class="ac-tags"><span class="ac-tag" style="background:${color}22;color:${color}">${CATS[a[3]]?.name.split(' ')[0]||a[3]}</span>
+  <span class="ac-tag" style="background:#f1f5f9;color:#64748b">${(CSTATUS[a[13]]||CSTATUS.lc).label}</span></div>`;
+  card.appendChild(iw);card.appendChild(body);
+  card.onclick=()=>openAnimal(a);
+  return card;
+}
+
+// ══════════════ WIKI IMAGE ══════════════
+const imgCache={};
+async function fetchWikiImage(key,imgEl,ph,loader){
+  if(!key){loader.style.display='none';ph.style.display='flex';return}
+  if(imgCache[key]){setImg(imgEl,ph,loader,imgCache[key]);return}
+  try{
+    const r=await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(key)}`);
+    const d=await r.json();
+    const url=d?.thumbnail?.source||d?.originalimage?.source;
+    if(url){imgCache[key]=url;setImg(imgEl,ph,loader,url)}
+    else{loader.style.display='none';ph.style.display='flex'}
+  }catch(e){loader.style.display='none';ph.style.display='flex'}
+}
+function setImg(imgEl,ph,loader,url){
+  imgEl.onload=()=>{loader.style.display='none';ph.style.display='none';imgEl.style.display='block'};
+  imgEl.onerror=()=>{loader.style.display='none';ph.style.display='flex'};
+  imgEl.src=url;
+}
+
+// ══════════════ OPEN ANIMAL ══════════════
+function openAnimal(a){
+  sndChime();currentAnimal={name:a[1]};
+  const cat=CATS[a[3]]||{color:'#6b5a3a',light:'#f0ebe0'};
+  // hero
+  document.getElementById('m-emoji').textContent=a[0];
+  document.getElementById('m-name').textContent=a[1];
+  document.getElementById('m-sciname').textContent=a[2];
+  document.getElementById('m-hero').style.background=`linear-gradient(135deg,${cat.color}33,${cat.color}11)`;
+  // hero image
+  const heroImg=document.getElementById('m-hero-img');
+  const heroPh=document.getElementById('m-hero-ph');
+  heroPh.textContent=a[0];heroPh.style.background=`linear-gradient(135deg,${cat.color}22,${cat.color}08)`;
+  heroImg.style.display='none';heroPh.style.display='flex';
+  if(a[4]){
+    if(imgCache[a[4]]){heroImg.src=imgCache[a[4]];heroImg.style.display='block';heroPh.style.display='none'}
+    else{fetchWikiImage(a[4],heroImg,heroPh,{style:{display:'none'}})}
+  }
+  // tags
+  const tags=document.getElementById('m-tags');
+  tags.innerHTML=`<span class="m-tag" style="background:${cat.color}22;color:${cat.color};font-weight:800">${cat.name}</span>`;
+  // info
+  document.getElementById('m-diet').textContent=a[6];
+  document.getElementById('m-habitat').textContent=a[7];
+  document.getElementById('m-size').textContent=a[8];
+  document.getElementById('m-weight').textContent=a[9];
+  document.getElementById('m-found').textContent=a[10];
+  document.getElementById('m-lifespan').textContent=a[11];
+  document.getElementById('m-baby').textContent=a[12];
+  // conservation
+  const cs=CSTATUS[a[13]]||CSTATUS.lc;
+  const conserv=document.getElementById('m-conserv');
+  conserv.style.background=cs.bg;
+  document.getElementById('m-cbadge').textContent=cs.label;
+  document.getElementById('m-cbadge').style.background=cat.color;
+  document.getElementById('m-ctext').textContent=a[14];
+  document.getElementById('m-ctext').style.color=cs.text;
+  // facts
+  const fl=document.getElementById('m-facts');fl.innerHTML='';
+  (a[15]||[]).forEach(f=>{const li=document.createElement('li');li.textContent=f;fl.appendChild(li)});
+  // close btn
+  document.getElementById('m-close').style.background=`linear-gradient(135deg,${cat.color},${cat.color}bb)`;
+  document.getElementById('mbg').classList.add('on');
+}
+
+// ══════════════ SEARCH ══════════════
+function doSearch(q){
+  q=q.trim().toLowerCase();
+  if(!q){document.getElementById('s-search').classList.remove('active');if(currentCat)openCat(currentCat);else goHub();return}
+  const res=ANIMALS.filter(a=>a[1].toLowerCase().includes(q)||a[2].toLowerCase().includes(q)||a[3].toLowerCase().includes(q)||a[6].toLowerCase().includes(q)||a[10].toLowerCase().includes(q));
+  const cat=currentCat?CATS[currentCat]:null;
+  const color=cat?cat.color:'#6b5a3a';
+  document.getElementById('search-title').textContent=`🔍 "${q}" — ${res.length} result${res.length!==1?'s':''}`;
+  const grid=document.getElementById('search-grid');grid.innerHTML='';
+  res.forEach((a,i)=>grid.appendChild(buildCard(a,i,CATS[a[3]]?.color||color)));
+  hideAll();
+  document.getElementById('s-search').classList.add('active');
+  document.getElementById('s-search').style.background='';
+  window.scrollTo(0,0);
+}
+
+// ══════════════ MODAL ══════════════
+function closeModal(e){if(e.target===document.getElementById('mbg'))closeModalBtn()}
+function closeModalBtn(){sndPop();document.getElementById('mbg').classList.remove('on')}
+
+
+// ══════════════ INTRO BUTTON ══════════════
+document.querySelector('.intro-btn').addEventListener('click',()=>{goHub()});
+
+// ══════════════════════════════════════════════
+// LEVELLED QUIZ — 10 levels × 10 questions
+// Format: [question, emoji, [A,B,C,D], correct_idx, fun_fact]
+// Levels 1-3: ages 5-6  |  4-6: ages 6-7  |  7-8: ages 7-8  |  9-10: ages 8-9
+// ══════════════════════════════════════════════
+const LEVELS = [
+// ─── LEVEL 1 — Super easy! What colour / what sound ───
+[
+['What colour is a flamingo?','🦩',['Blue','Pink','Green','Yellow'],1,'Flamingos eat pink shrimp which turns their feathers pink!'],
+['What sound does a lion make?','🦁',['Moo','Roar','Tweet','Hiss'],1,'A lion\'s roar is SO loud you can hear it 8 km away!'],
+['What does a frog say?','🐸',['Woof','Ribbit','Moo','Neigh'],1,'Frogs croak to talk to other frogs — especially to find friends!'],
+['What do cows give us to drink?','🐄',['Juice','Honey','Milk','Water'],2,'One cow makes enough milk to fill 90 glasses every single day!'],
+['What do bees make?','🐝',['Jam','Honey','Butter','Milk'],1,'Bees visit up to 5,000 flowers just to make one spoonful of honey!'],
+['Where do fish live?','🐟',['In trees','In the sky','In water','Underground'],2,'There are over 35,000 kinds of fish in oceans, lakes and rivers!'],
+['What colour are most frogs?','🐸',['Pink','Green','Blue','Orange'],1,'Green helps frogs hide among leaves — it\'s perfect camouflage!'],
+['What does a cat say?','🐈',['Woof','Moo','Meow','Roar'],2,'Cats meow mainly to talk to humans — not to other cats!'],
+['What do dogs wag when they are happy?','🐕',['Their ears','Their tail','Their nose','Their paws'],1,'A wagging tail is a dog\'s way of giving you a big smile!'],
+['What colour is a polar bear?','🐻‍❄️',['Black','Brown','White','Yellow'],2,'Polar bear fur looks white but is actually see-through — like clear straws!'],
+],
+// ─── LEVEL 2 — Where do animals live? ───
+[
+['Where do penguins live?','🐧',['Desert','Jungle','Icy cold places','Rainforest'],2,'Emperor penguins live in Antarctica where it gets to -60°C — super freezing!'],
+['Where do camels live?','🐪',['Rainforest','Desert','Ocean','Mountains'],1,'Camels store fat in their humps to survive weeks without water in the desert!'],
+['Where do monkeys live?','🐒',['Arctic','Desert','Jungle trees','Deep ocean'],2,'Monkeys use their long tails like an extra hand to swing through trees!'],
+['Where do dolphins live?','🐬',['In the jungle','In the ocean','Underground','In the desert'],1,'Dolphins live in the ocean but breathe air — they swim to the top to breathe!'],
+['Where do lions live?','🦁',['Snowy mountains','The jungle','Grassy savannas','The ocean'],2,'Lions love hot, open grasslands in Africa where they can spot prey easily!'],
+['Where do eagles make their nests?','🦅',['Underground','On the ground','High up in trees or cliffs','In the ocean'],2,'Eagle nests called eyries can weigh as much as a car — they add to them every year!'],
+['Where do bears sleep in winter?','🐻',['In water','In a cosy den','In a tree','In the sky'],1,'Bears hibernate in dens all winter — sometimes for 7 whole months!'],
+['Where do clownfish live?','🐠',['In rivers','In coral reefs','In frozen lakes','In rainforests'],1,'Clownfish live safely inside sea anemones — the stings don\'t hurt them at all!'],
+['Where do bats sleep during the day?','🦇',['In the ocean','In meadows','Hanging upside down in caves','In nests'],2,'Bats hang upside down to sleep — their claws lock closed without any effort!'],
+['Where do crabs live?','🦀',['In trees','On beaches and in the sea','In the desert','Underground caves'],1,'Crabs walk sideways — they\'re the only animals that move that way!'],
+],
+// ─── LEVEL 3 — What do animals eat? ───
+[
+['What is a panda\'s favourite food?','🐼',['Fish','Bamboo','Apples','Honey'],1,'Pandas eat bamboo for up to 14 hours every single day — they love it!'],
+['What do sharks eat?','🦈',['Seaweed','Plants','Fish and sea animals','Fruit'],2,'Sharks have been on Earth for 450 million years — longer than trees!'],
+['What do rabbits love to eat?','🐇',['Meat','Carrots and grass','Fish','Insects'],1,'Rabbits\' teeth never stop growing — munching carrots keeps them short!'],
+['What do penguins eat?','🐧',['Bamboo','Berries','Fish','Honey'],2,'Penguins are amazing swimmers and can catch up to 30 fish in one dive!'],
+['What do butterflies drink?','🦋',['Milk','Honey','Nectar from flowers','Water only'],2,'Butterflies taste flowers with their FEET before drinking the nectar!'],
+['What do owls eat?','🦉',['Seeds','Mice and small animals','Grass','Fruit'],1,'Owls swallow their food whole and then cough up the bones — yuck!'],
+['What do elephants eat?','🐘',['Meat','Grass, leaves and fruit','Fish','Insects'],1,'Elephants eat up to 150 kg of plants every day — that\'s like a whole person!'],
+['What do frogs eat?','🐸',['Plants','Honey','Insects and bugs','Seeds'],2,'Frogs use their super-long sticky tongue to zap insects in a split second!'],
+['What do horses eat?','🐎',['Meat','Fish','Grass and hay','Insects'],2,'Horses have teeth that keep growing their whole life — perfect for chewing grass!'],
+['What do bears love to eat in summer?','🐻',['Only fish','Only meat','Berries, honey, fish and more','Only plants'],2,'Bears are omnivores — they eat almost anything they can find!'],
+],
+// ─── LEVEL 4 — What is it called? Baby animals ───
+[
+['What is a baby dog called?','🐕',['Kitten','Calf','Puppy','Foal'],2,'Puppies are born with their eyes closed — they open after 2 weeks!'],
+['What is a baby cat called?','🐈',['Puppy','Kitten','Cub','Lamb'],1,'Kittens can\'t see or hear when they\'re born — they use smell to find mum!'],
+['What is a baby bear called?','🐻',['Puppy','Calf','Lamb','Cub'],3,'Bear cubs are tiny when born — about the size of a hamster!'],
+['What is a baby cow called?','🐄',['Puppy','Foal','Calf','Kid'],2,'Calves can walk and run just a few hours after being born — amazing!'],
+['What is a baby sheep called?','🐑',['Kid','Calf','Lamb','Cub'],2,'Lambs know their mum\'s voice from when they\'re still inside the egg — wow!'],
+['What is a baby kangaroo called?','🦘',['Cub','Joey','Pup','Kitten'],1,'A newborn Joey is only 2 cm long — it crawls into mum\'s pouch straight away!'],
+['What is a baby elephant called?','🐘',['Pup','Lamb','Cub','Calf'],3,'Elephant calves can walk within a few hours of being born!'],
+['What is a baby deer called?','🦌',['Cub','Foal','Fawn','Kid'],2,'Fawns have spots that help them hide in dappled forest light!'],
+['What is a baby horse called?','🐎',['Cub','Foal','Calf','Pup'],1,'Foals can stand up and walk within just one hour of being born!'],
+['What is a baby goat called?','🐐',['Lamb','Calf','Joey','Kid'],3,'Kids can jump and play from the very first day of their life!'],
+],
+// ─── LEVEL 5 — Animal bodies and features ───
+[
+['How many legs does a spider have?','🕷️',['4','6','8','10'],2,'Spiders use all 8 legs to spin webs that are stronger than steel wire!'],
+['What do snakes use to smell?','🐍',['Their nose','Their tongue','Their eyes','Their skin'],1,'A snake flicks its tongue to collect tiny bits of smell from the air!'],
+['Which animal has a very long neck?','🦒',['Elephant','Giraffe','Hippo','Rhino'],1,'A giraffe\'s neck can be 2 metres long — but has the same bones as yours!'],
+['What do fish use to breathe underwater?','🐟',['Lungs','Noses','Gills','Ears'],2,'Gills take oxygen straight from the water — like lungs take it from air!'],
+['What special body part helps a duck swim?','🦆',['Feathers','Webbed feet','Long tail','Curved beak'],1,'Webbed feet work like paddles to push ducks through the water!'],
+['What do bats use to find their way in the dark?','🦇',['Big eyes','Sound echoes (echolocation)','A special nose','GPS'],1,'Bats squeak and listen to the echo — it tells them exactly where things are!'],
+['What is special about a chameleon\'s eyes?','🦎',['They glow','They move independently in different directions','They are very tiny','They are always closed'],1,'Each eye can look in a completely different direction at the same time!'],
+['What is a turtle protected by?','🐢',['Thick fur','A hard shell','Spines','Slippery skin'],1,'A turtle\'s shell is part of its skeleton — it can never leave its home!'],
+['What is special about a starfish?','⭐',['It can fly','It can regrow lost arms','It can talk','It changes colour'],1,'If a starfish loses an arm, it simply grows a brand new one!'],
+['What do elephants use to pick things up?','🐘',['Their ears','Their tusks','Their trunk','Their feet'],2,'An elephant\'s trunk has 40,000 muscles and is strong enough to lift a tree!'],
+],
+// ─── LEVEL 6 — Animal groups and records ───
+[
+['What is a group of lions called?','🦁',['A pack','A flock','A pride','A herd'],2,'A lion pride has mostly females who do most of the hunting!'],
+['What is a group of fish called?','🐟',['A pack','A school','A herd','A flock'],1,'Fish swim in schools to confuse predators — hard to catch one from a crowd!'],
+['Which is the biggest animal in the world?','🐋',['Elephant','T-Rex','Blue Whale','Giraffe'],2,'A blue whale\'s heart is as big as a small car — boom boom boom!'],
+['Which is the fastest land animal?','🐆',['Lion','Horse','Cheetah','Ostrich'],2,'Cheetahs sprint from 0 to 100 km/h in just 3 seconds — wow!'],
+['Which bird cannot fly but can swim?','🐧',['Eagle','Parrot','Penguin','Flamingo'],2,'Penguins use their wings as flippers — they\'re superstar swimmers!'],
+['What is the tallest animal?','🦒',['Elephant','Giraffe','Horse','Camel'],1,'Giraffes can reach leaves 6 metres high — that\'s taller than a house!'],
+['Which is the only mammal that can fly?','🦇',['Squirrel','Bat','Lemur','Flying fish'],1,'Bats are the only mammals with real wings — not just gliding!'],
+['What is a group of wolves called?','🐺',['A pride','A flock','A pack','A herd'],2,'Wolf packs are families — they howl together to stay close!'],
+['Which animal has the longest nose?','🐘',['Anteater','Elephant','Tapir','Proboscis Monkey'],1,'An elephant\'s trunk is a nose AND a hand — it can pick up tiny coins!'],
+['What is the world\'s largest reptile?','🐊',['Komodo Dragon','King Cobra','Saltwater Crocodile','Giant Tortoise'],2,'Saltwater crocodiles can be 7 metres long and weigh 1,000 kg!'],
+],
+// ─── LEVEL 7 — Fascinating facts ───
+[
+['How many hearts does an octopus have?','🐙',['1','2','3','5'],2,'Two hearts pump blood to the gills, one pumps it around the body!'],
+['Why are flamingos pink?','🦩',['They are born pink','They eat pink shrimp and algae','The sun makes them pink','They paint themselves'],1,'Without their pink food, flamingos would actually turn white!'],
+['What do monarch butterflies do every year?','🦋',['Change colour','Hibernate underground','Migrate 4,500 km','Shed their wings'],2,'Monarchs travel further than most planes fly in a day — incredible!'],
+['Which animal sleeps only 30 minutes a day?','🦒',['Giraffe','Cat','Bat','Sloth'],0,'Giraffes sleep in tiny naps — staying awake keeps them safe from lions!'],
+['What can axolotls do that most animals can\'t?','🦎',['Fly','Breathe fire','Regrow lost body parts','Change colour'],2,'Axolotls can regrow an entire leg, eye, or even part of their brain!'],
+['How do dolphins talk to each other?','🐬',['By splashing','Each has a unique whistle name','By changing colour','By flashing lights'],1,'Every dolphin invents its own whistle name — and friends use it to call them!'],
+['What surprising thing can a chicken do?','🐓',['Swim underwater','Remember 100 faces','Fly as fast as a car','Change colour'],1,'Chickens recognise up to 100 different faces — human and chicken!'],
+['What is special about a gecko\'s feet?','🦎',['They are very smelly','Millions of tiny hairs let them stick to any surface','They glow','They are webbed'],1,'Gecko feet can hold their whole body weight on a single toe!'],
+['How long can a Galápagos tortoise live?','🐢',['30 years','80 years','Over 150 years','500 years'],2,'Some tortoises alive today were hatched before your great-great-grandparents were born!'],
+['What do bees do to tell friends where flowers are?','🐝',['Buzz loudly','Do a waggle dance','Change colour','Fly in circles'],1,'The waggle dance shows exactly which direction and how far away the flowers are!'],
+],
+// ─── LEVEL 8 — Tricky animal facts ───
+[
+['How many bones does a shark have?','🦈',['Hundreds','The same as humans','Zero — it\'s all cartilage','Only 12'],2,'Sharks\' skeletons are made of cartilage — the same stuff as your ears and nose!'],
+['What are a rhino\'s horns made of?','🦏',['Bone','Ivory','Keratin — like your fingernails','Hardened mud'],2,'If you cut a rhino\'s horn it would grow back — just like your nails!'],
+['What gender are all clownfish born as?','🐠',['Female','Male','Half and half','Neither'],1,'The boss clownfish changes from male to female — mind-blowing!'],
+['Which bird builds the biggest nest?','🦅',['Robin','Bald Eagle','Sparrow','Pigeon'],1,'Bald eagle nests get added to every year — some weigh as much as a car!'],
+['How do trees know when elephants are walking nearby?','🐘',['By smell','Elephants stomp vibrations through the ground','By sound only','They don\'t'],1,'Elephants feel and send messages through the ground with their feet!'],
+['Which prehistoric animal was the size of a bus?','🦕',['T-Rex','Triceratops','Brachiosaurus','Pteranodon'],2,'Brachiosaurus was as tall as a 4-storey building — taller than 6 elephants!'],
+['How fast can a hummingbird flap its wings?','🐦',['5 times a second','20 times a second','80 times a second','200 times a second'],2,'So fast their wings are a blur — that\'s what makes the humming sound!'],
+['What is the name of a group of flamingos?','🦩',['A flock','A gaggle','A flamboyance','A flutter'],2,'A flamboyance of flamingos — the most dramatic group name in the animal kingdom!'],
+['What can a Komodo dragon do without a male?','🦎',['Breathe fire','Have babies all by herself','Fly','Regrow her tail'],1,'Female Komodo dragons can lay eggs without ever meeting a male!'],
+['Which animal has rectangular pupils?','🐐',['Horse','Dog','Cat','Goat'],3,'Rectangular pupils give goats nearly 340° of vision — they see almost all around!'],
+],
+// ─── LEVEL 9 — Expert explorer ───
+[
+['How loud is a blue whale\'s call?','🐋',['Same as a whisper','Same as a shout','Louder than a jet engine','Same as a drum'],2,'At 188 decibels, it\'s the loudest sound made by any animal ever!'],
+['How many eyes does a dragonfly have?','🦟',['2','4','2 huge compound eyes covering most of the head','8'],2,'Dragonfly eyes give them almost 360° vision — they almost never miss!'],
+['What percentage of DNA do humans share with chimpanzees?','🐒',['50%','75%','98.7%','100%'],2,'We share more DNA with chimps than chimps share with gorillas — we\'re very close cousins!'],
+['Which tiny animal can survive in outer space?','🐛',['Cockroach','Ant','Tardigrade (water bear)','Earthworm'],2,'Tardigrades can survive frozen, boiled, dried out, or blasted with radiation!'],
+['How do Arctic terns navigate from pole to pole?','🐦',['By following rivers','Using Earth\'s magnetic field and the sun','By following other birds','By GPS smell'],1,'Arctic terns travel 90,000 km every year — the longest migration of any animal!'],
+['What is special about the mantis shrimp\'s punch?','🦐',['It punches backwards','It punches with the force of a bullet','It punches using its tail','It doesn\'t really punch'],1,'The punch is so fast it heats the water to the temperature of the sun\'s surface — briefly!'],
+['What makes the platypus so strange for a mammal?','🦆',['It has gills','It lays eggs AND has a duck bill AND has venom','It can fly','It lives 500 years'],1,'The platypus is so unusual scientists first thought it was a fake when they saw it!'],
+['How does a vampire bat share its food?','🦇',['It never shares','It regurgitates blood for hungry friends','It leaves food on rocks','It buries blood bags'],1,'Vampire bats share blood meals with friends — paying back bats who helped them before!'],
+['How many colour types can a mantis shrimp see?','🦐',['3 like us','8','12','16'],3,'Humans see 3 colour types — mantis shrimp see 16 and probably see colours we can\'t imagine!'],
+['Which dinosaur is the closest relative of modern birds?','🦖',['Triceratops','Brachiosaurus','Velociraptor — theropod dinosaurs','Pterodactyl'],2,'All birds today are technically living dinosaurs — descendants of theropods!'],
+],
+// ─── LEVEL 10 — Animal Kingdom Master! ───
+[
+['How far away can a wolf pack hear another howl?','🐺',['1 km','5 km','10 km','50 km'],2,'Wolves use howls like long-distance phone calls to coordinate the whole pack!'],
+['What is unique about each tiger\'s stripe pattern?','🐯',['They all match','They change with age','Every tiger\'s stripes are unique like fingerprints','Only males have unique stripes'],2,'You can identify individual tigers just from their stripe pattern — no two are alike!'],
+['How do elephants communicate over long distances?','🐘',['Only by trumpeting','By infrasound vibrations through the ground','By flashing their ears','By smell alone'],1,'They send rumbles too low for humans to hear — felt through the ground for kilometres!'],
+['Which animal inspired the myth of the Kraken?','🦑',['Blue Whale','Whale Shark','Giant Squid','Giant Octopus'],2,'Giant squid can have arms 13 metres long and eyes the size of dinner plates!'],
+['How do cleaner wrasse fish help sharks and rays?','🐟',['They scare away predators','They eat parasites off their skin — a cleaning station!','They guide them to food','They warn of danger'],1,'Sharks actually queue up patiently at cleaning stations — even though they could eat the fish!'],
+['What ancient survival trick does a possum use?','🐾',['It runs at 100 km/h','It shoots venom','It plays completely dead (thanatosis)','It turns invisible'],2,'Playing dead fools predators so well that even smell-hunters are tricked!'],
+['How does the archerfish hunt insects above the water?','🐟',['It jumps and catches them','It spits a jet of water to knock them off branches','It waits for them to fall','It uses its fin'],1,'The archerfish aims perfectly, correcting for light bending at the water surface!'],
+['What is extraordinary about a bowhead whale\'s lifespan?','🐋',['It lives 30 years','It lives exactly 100 years','Some live over 200 years','It lives forever'],2,'Bowhead whales can live over 200 years — some alive today were born before cars existed!'],
+['How do pistol shrimp stun their prey?','🦐',['Venom','By snapping their claw so fast it creates a shockwave and flash of light','By biting','By sitting on them'],1,'The snap creates a bubble that collapses at 4,700°C — briefly hotter than the sun\'s surface!'],
+['Which is the only known animal to be truly biologically immortal?','🪼',['Tardigrade','Axolotl','Turritopsis jellyfish','Hydra worm'],2,'The immortal jellyfish can revert back to a baby and start its life over again — forever!'],
+],
+];
+
+// ══════════════ QUIZ STATE ══════════════
+let currentLevel=1, qIdx=0, qScore=0, qAns=false, totalScore=0, levelsUnlocked=1;
+
+function startQuiz(){
+  sndChime();
+  hideAll();
+  document.getElementById('s-quiz').classList.add('active');
+  window.scrollTo(0,0);
+  renderLevelSelect();
+}
+
+function renderLevelSelect(){
+  const area=document.getElementById('quiz-area');
+  const catSel=document.getElementById('quiz-cat-sel');
+  catSel.innerHTML='';
+  let html='<div style="text-align:center;margin-bottom:1rem">';
+  html+='<div style="font-family:\'Fredoka One\',cursive;font-size:1.1rem;color:#5a3e28;margin-bottom:1rem">🌟 Pick your level!</div>';
+  html+='<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:.6rem;max-width:400px;margin:0 auto">';
+  const stars=['⭐','⭐⭐','🌟','🌟🌟','🏆','🏆⭐','🔥','🔥🔥','💎','👑'];
+  const labels=['Baby','Easy','OK!','Good','Smart','Cool!','Brainy','Wow!','Genius','MASTER'];
+  for(let i=1;i<=10;i++){
+    const locked=i>levelsUnlocked;
+    const done=i<levelsUnlocked;
+    html+=`<button onclick="${locked?'sndWrong()':('pickLevel('+i+')')}" style="
+      font-family:'Fredoka One',cursive;
+      font-size:.8rem;
+      border:3px solid ${done?'#5a8a3c':locked?'#c8b89a':'#8B4513'};
+      background:${done?'#5a8a3c':locked?'#e8dcc8':'linear-gradient(135deg,#d4a84b,#8B4513)'};
+      color:${done||!locked?'white':'#a08060'};
+      border-radius:14px;
+      padding:.5rem .3rem;
+      cursor:${locked?'default':'pointer'};
+      opacity:${locked?.55:1};
+      transition:transform .15s;
+      display:flex;flex-direction:column;align-items:center;gap:2px"
+      onmouseover="if(${!locked})this.style.transform='scale(1.08)'"
+      onmouseout="this.style.transform='scale(1)'">
+      <span style="font-size:1.1rem">${done?'✅':locked?'🔒':stars[i-1]}</span>
+      <span>Lv ${i}</span>
+      <span style="font-size:.65rem;opacity:.8">${labels[i-1]}</span>
+    </button>`;
+  }
+  html+='</div>';
+  if(levelsUnlocked>1) html+=`<div style="margin-top:1rem;font-family:'Fredoka One',cursive;font-size:.9rem;color:#5a3e28">🏅 Total stars collected: ${totalScore} ⭐</div>`;
+  html+='</div>';
+  area.innerHTML=html;
+}
+
+function pickLevel(lvl){
+  sndPop();
+  currentLevel=lvl;
+  qIdx=0; qScore=0; qAns=false;
+  renderQ();
+}
+
+function renderQ(){
+  const area=document.getElementById('quiz-area');
+  const qs=LEVELS[currentLevel-1];
+  if(qIdx>=qs.length){
+    // Level complete!
+    const pct=Math.round(qScore/qs.length*100);
+    const passed=qScore>=7;
+    const stars=qScore>=10?3:qScore>=8?2:qScore>=7?1:0;
+    const starStr='⭐'.repeat(stars)+(stars<3?'☆'.repeat(3-stars):'');
+    const em=stars===3?'🏆':stars>=1?'🌟':'🐣';
+    totalScore+=stars;
+    if(passed && currentLevel===levelsUnlocked && levelsUnlocked<10) levelsUnlocked++;
+    area.innerHTML=`<div class="quiz-result">
+      <span class="qr-emoji">${em}</span>
+      <div style="font-size:2.2rem;margin:.3rem 0">${starStr}</div>
+      <div class="qr-title">Level ${currentLevel} ${passed?'Complete!':'— Try Again!'}</div>
+      <div class="qr-score">${qScore} / ${qs.length}</div>
+      <div class="qr-sub">${passed
+        ? (stars===3?'PERFECT! You\'re a true Animal Master! 🦁'
+          :stars===2?'Brilliant! Amazing animal brain! 🌟'
+          :'Well done! You passed! Keep going! 🎉')
+        : 'You need 7/10 to pass — you can do it! 💪'}</div>
+      <div class="qr-btns">
+        ${!passed?`<button class="qr-btn" style="background:linear-gradient(135deg,#8B4513,#5a8a3c)" onclick="pickLevel(${currentLevel});sndChime()">🔄 Try Again</button>`:''}
+        ${passed && currentLevel<10?`<button class="qr-btn" style="background:linear-gradient(135deg,#d4a84b,#8B4513)" onclick="pickLevel(${currentLevel+1});sndChime()">Level ${currentLevel+1} → 🚀</button>`:''}
+        <button class="qr-btn" style="background:linear-gradient(135deg,#5a8a3c,#3d6b28)" onclick="renderLevelSelect();sndPop()">🗺️ All Levels</button>
+        <button class="qr-btn" style="background:linear-gradient(135deg,#6b5a3a,#4a3e28)" onclick="goHub()">🦁 Animals</button>
+      </div></div>`;
+    if(passed) sndChime(); else sndWrong();
+    return;
+  }
+  const q=qs[qIdx]; qAns=false;
+  area.innerHTML=`
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem">
+      <span style="font-family:'Fredoka One',cursive;font-size:.85rem;color:#8B4513;background:#f5ede0;padding:.3rem .8rem;border-radius:50px">Level ${currentLevel} 🌟</span>
+      <span style="font-family:'Fredoka One',cursive;font-size:.85rem;color:#5a3e28">Q${qIdx+1}/10 &nbsp;·&nbsp; ⭐${qScore}</span>
+    </div>
+    <div class="quiz-prog-bar"><div class="quiz-prog-fill" style="width:${qIdx*10}%"></div></div>
+    <span class="quiz-q-icon">${q[1]}</span>
+    <div class="quiz-q">${q[0]}</div>
+    <div class="quiz-opts">
+      ${q[2].map((o,i)=>`<button class="quiz-opt" id="qo${i}" onclick="answerQ(${i})">${o}</button>`).join('')}
+    </div>
+    <div class="quiz-fb" id="qfb"></div>
+    <div class="quiz-fact" id="qfact">💡 ${q[4]}</div>
+    <div style="text-align:center;margin-top:.5rem">
+      <button class="quiz-next" id="qnxt" onclick="nextQ()">Next Question →</button>
+    </div>`;
+}
+
+function answerQ(i){
+  if(qAns)return; qAns=true;
+  const q=LEVELS[currentLevel-1][qIdx];
+  const ok=(i===q[3]);
+  if(ok){qScore++;sndCorrect();}else{sndWrong();}
+  document.querySelectorAll('.quiz-opt').forEach((b,j)=>{
+    b.disabled=true;
+    if(j===q[3])b.classList.add('correct');
+    else if(j===i&&!ok)b.classList.add('wrong');
+  });
+  const fb=document.getElementById('qfb');
+  fb.textContent=ok?'🎉 Correct! Amazing!':'❌ Not this time — check the fun fact!';
+  fb.style.color=ok?'#16a34a':'#dc2626';
+  document.getElementById('qfact').style.display='block';
+  document.getElementById('qnxt').style.display='inline-block';
+}
+
+function nextQ(){qIdx++;renderQ();sndPop();}
+
+
+
+</script>
+
+<!-- QUIZ SCENE -->
+<div id="s-quiz">
+  <div class="quiz-wrap">
+    <div class="quiz-header">
+      <button class="quiz-back" onclick="goHub()">← Categories</button>
+      <span style="font-family:'Fredoka One',cursive;font-size:1.4rem;color:#1e293b">🧠 Animal Quiz!</span>
+    </div>
+    <div class="quiz-cat-sel" id="quiz-cat-sel"></div>
+    <div id="quiz-area"></div>
+  </div>
+</div>
+</body>
+</html>
